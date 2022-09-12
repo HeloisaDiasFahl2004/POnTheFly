@@ -26,7 +26,7 @@ namespace Proj_POG_OnTheFly
         }
         public override string ToString()
         {
-            return "\nDADOS AERONAVE: \nInscrição: " + Inscricao + "\nCapacidade: " + Capacidade + "\nAssentos Ocupados: " + AssentosOcupados + "\nData Cadastro: " + DataCadastro.ToString("dd/MM/yyyyHH:mm") + "\nÚltima Venda: " + UltimaVenda.ToString("dd/MM/yyyyHH:mm") + "\nSituação: " + Situacao;
+            return "\nDADOS AERONAVE: \nInscrição: " + Inscricao + "\nCapacidade: " + Capacidade + "\nAssentos Ocupados: " + AssentosOcupados + "\nData Cadastro: " + DataCadastro.ToString("dd/MM/yyyy HH:mm") + "\nÚltima Venda: " + UltimaVenda.ToString("dd/MM/yyyy HH:mm") + "\nSituação: " + Situacao;
         }
         public string ObterDados()
         {

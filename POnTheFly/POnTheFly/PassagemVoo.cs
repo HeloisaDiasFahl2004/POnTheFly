@@ -19,11 +19,11 @@ namespace Proj_POG_OnTheFly
             this.IDVoo = idVoo;
             this.DataUltimaOperacao = dataUltimaOperacao;
             this.Valor = valor;
-            this.Situacao = 'L'; // Livre,Reservada,Paga
+            this.Situacao = Situacao; // Livre,Reservada,Paga
         }
         public override string ToString()
         {
-            return "\nDADOS PASSAGEM: \nID Passagem: " + IDPassagem + "\nID VOO: " + IDVoo + "\nData Última Operação: " + DataUltimaOperacao.ToString("dd/MM/yyyyHH:mm") + "\nValor: " + Valor + "\nSituação: " + Situacao;
+            return "\nDADOS PASSAGEM: \nID Passagem: " + IDPassagem + "\nID VOO: " + IDVoo + "\nData Última Operação: " + DataUltimaOperacao.ToString("dd/MM/yyyy HH:mm") + "\nValor: " + Valor + "\nSituação: " + Situacao;
         }
         public string ObterDados()
         {

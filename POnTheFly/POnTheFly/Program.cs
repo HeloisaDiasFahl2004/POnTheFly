@@ -146,228 +146,297 @@ namespace POnTheFly
             char[] caracteres;
             string[] linhas;
             //Passageiro
-            linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\Passageiro.dat");
-            foreach (var linha in linhas)
+            try
             {
-                caracteres = linha.ToCharArray();
-                for (int i = 0; i <= 10; i++)
+                linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\Passageiro.dat");
+                foreach (var linha in linhas)
                 {
-                    cpf = cpf + caracteres[i].ToString();
+                    caracteres = linha.ToCharArray();
+                    for (int i = 0; i <= 10; i++)
+                    {
+                        cpf = cpf + caracteres[i].ToString();
+                    }
+                    for (int i = 11; i <= 61; i++)
+                    {
+                        nome = nome + caracteres[i].ToString();
+                    }
+                    for (int i = 62; i <= 69; i++)
+                    {
+                        data = data + caracteres[i].ToString();
+                    }
+                    DataNascimento = DateConverter(data);
+                    Sexo = caracteres[70];
+                    for (int i = 71; i <= 82; i++)
+                    {
+                        data = data + caracteres[i].ToString();
+                    }
+                    DataUltimaCompra = DateConverter(data);
+                    for (int i = 83; i <= 94; i++)
+                    {
+                        data = data + caracteres[i].ToString();
+                    }
+                    DataCadastro = DateConverter(data);
+                    Situacao = caracteres[95];
+                    Passageiro P = new Passageiro(cpf, nome, DataNascimento, Sexo, DataUltimaCompra, DataCadastro, Situacao);
+                    listPassageiro.Add(P);
                 }
-                for (int i = 11; i <= 61; i++)
-                {
-                    nome = nome + caracteres[i].ToString();
-                }
-                for (int i = 62; i <= 69; i++)
-                {
-                    data = data + caracteres[i].ToString();
-                }
-                DataNascimento = DateConverter(data);
-                Sexo = caracteres[70];
-                for (int i = 71; i <= 82; i++)
-                {
-                    data = data + caracteres[i].ToString();
-                }
-                DataUltimaCompra = DateTime.Parse(data);
-                for (int i = 83; i <= 94; i++)
-                {
-                    data = data + caracteres[i].ToString();
-                }
-                DataCadastro = DateConverter(data);
-                Situacao = caracteres[95];
-
-                Passageiro P = new Passageiro(cpf, nome, DataNascimento, Sexo, DataUltimaCompra, DataCadastro, Situacao);
-                listPassageiro.Add(P);
+            }
+            catch (Exception )
+            {
+                Console.WriteLine("Mensagem de Erro: Não foi possível carregar dados do arquivo Passageiro.dat");
             }
             //Companhia Aerea
-            linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\CompanhiaAerea.dat");
-            foreach (var linha in linhas)
+            try
             {
-                caracteres = linha.ToCharArray();
-                for (int i = 0; i <= 13; i++)
+                linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\CompanhiaAerea.dat");
+                foreach (var linha in linhas)
                 {
-                    Cnpj = Cnpj + caracteres[i].ToString();
+                    caracteres = linha.ToCharArray();
+                    for (int i = 0; i <= 13; i++)
+                    {
+                        Cnpj = Cnpj + caracteres[i].ToString();
+                    }
+                    for (int i = 14; i <= 63; i++)
+                    {
+                        RazaoSocial = RazaoSocial + caracteres[i].ToString();
+                    }
+                    for (int i = 64; i <= 71; i++)
+                    {
+                        data = data + caracteres[i].ToString();
+                    }
+                    DataAbertura = DateConverter(data);
+                    for (int i = 72; i <= 83; i++)
+                    {
+                        data = data + caracteres[i].ToString();
+                    }
+                    UltimoVoo = DateConverter(data);
+                    for (int i = 84; i <= 95; i++)
+                    {
+                        data = data + caracteres[i].ToString();
+                    }
+                    DataCadastro = DateConverter(data);
+                    Situacao = caracteres[96];
+                    CompanhiaAerea CA = new CompanhiaAerea(Cnpj, RazaoSocial, DataAbertura, UltimoVoo, DataCadastro, Situacao);
+                    listCompanhiaAerea.Add(CA);
                 }
-                for (int i = 14; i <= 63; i++)
-                {
-                    RazaoSocial = RazaoSocial + caracteres[i].ToString();
-                }
-                for (int i = 64; i <= 71; i++)
-                {
-                    data = data + caracteres[i].ToString();
-                }
-                DataAbertura = DateConverter(data);
-                for (int i = 72; i <= 83; i++)
-                {
-                    data = data + caracteres[i].ToString();
-                }
-                UltimoVoo = DateConverter(data);
-                for (int i = 84; i <= 95; i++)
-                {
-                    data = data + caracteres[i].ToString();
-                }
-                DataCadastro = DateConverter(data);
-                Situacao = caracteres[96];
-                CompanhiaAerea CA = new CompanhiaAerea(Cnpj, RazaoSocial, DataAbertura, UltimoVoo, DataCadastro, Situacao);
-                listCompanhiaAerea.Add(CA);
+            }
+            catch (Exception )
+            {
+                Console.WriteLine("Mensagem de Erro: Não foi possível carregar dados do arquivo CompanhiaAerea.dat");
             }
             //Aeronaves
-            linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\Aeronaves.dat");
-            foreach (var linha in linhas)
+            try
             {
-                caracteres = linha.ToCharArray();
-                for (int i = 0; i <= 5; i++)
+                linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\Aeronave.dat");
+                foreach (var linha in linhas)
                 {
-                    Inscricao = Inscricao + caracteres[i].ToString();
+                    caracteres = linha.ToCharArray();
+                    for (int i = 0; i <= 5; i++)
+                    {
+                        Inscricao = Inscricao + caracteres[i].ToString();
+                    }
+                    for (int i = 6; i <= 8; i++)
+                    {
+                        Capacidade = Capacidade + caracteres[i];
+                    }
+                    for (int i = 9; i <= 11; i++)
+                    {
+                        Assentos = Assentos + caracteres[i];
+                    }
+                    for (int i = 12; i <= 23; i++)
+                    {
+                        data = data + caracteres[i].ToString();
+                    }
+                    UltimaVenda = DateConverter(data);
+                    for (int i = 24; i <= 35; i++)
+                    {
+                        data = data + caracteres[i].ToString();
+                    }
+                    DataCadastro = DateConverter(data);
+                    Situacao = caracteres[36];
+                    Aeronave Aer = new Aeronave(Inscricao, Capacidade, Assentos, UltimaVenda, DataCadastro, Situacao);
+                    listAeronave.Add(Aer);
                 }
-                for (int i = 6; i <= 8; i++)
-                {
-                    Capacidade = Capacidade + caracteres[i];
-                }
-                for (int i = 9; i <= 11; i++)
-                {
-                    Assentos = Assentos + caracteres[i];
-                }
-                for (int i = 12; i <= 23; i++)
-                {
-                    data = data + caracteres[i].ToString();
-                }
-                UltimaVenda = DateConverter(data);
-                for (int i = 24; i <= 35; i++)
-                {
-                    data = data + caracteres[i].ToString();
-                }
-                DataCadastro = DateConverter(data);
-                Situacao = caracteres[36];
-                Aeronave Aer = new Aeronave(Inscricao, Capacidade, Assentos, UltimaVenda, DataCadastro, Situacao);
-                listAeronave.Add(Aer);
+            }
+            catch (Exception )
+            {
+                Console.WriteLine("Mensagem de Erro:  Não foi possível carregar dados do arquivo Aeronave.dat ");
             }
             //Voo
-            linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\Voo.dat");
-            foreach (var linha in linhas)
+            try
             {
-                caracteres = linha.ToCharArray();
-                for (int i = 0; i <= 4; i++)
+                linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\Voo.dat");
+                foreach (var linha in linhas)
                 {
-                    IDVoo = IDVoo + caracteres[i].ToString();
+                    caracteres = linha.ToCharArray();
+                    for (int i = 0; i <= 4; i++)
+                    {
+                        IDVoo = IDVoo + caracteres[i].ToString();
+                    }
+                    for (int i = 5; i <= 7; i++)
+                    {
+                        Destino = Destino + caracteres[i].ToString();
+                    }
+                    for (int i = 8; i <= 13; i++)
+                    {
+                        Aeronave = Aeronave + caracteres[i].ToString();
+                    }
+                    for (int i = 14; i <= 25; i++)
+                    {
+                        data = data + caracteres[i].ToString();
+                    }
+                    DataVoo = DateConverter(data);
+                    for (int i = 26; i <= 37; i++)
+                    {
+                        data = data + caracteres[i].ToString();
+                    }
+                    DataCadastro = DateConverter(data);
+                    Situacao = caracteres[38];
+                    Voo V = new Voo(IDVoo, Destino, Aeronave, DataVoo, DataCadastro, Situacao);
+                    listVoo.Add(V);
                 }
-                for (int i = 5; i <= 7; i++)
-                {
-                    Destino = Destino + caracteres[i].ToString();
-                }
-                for (int i = 8; i <= 13; i++)
-                {
-                    Aeronave = Aeronave + caracteres[i].ToString();
-                }
-                for (int i = 14; i <= 25; i++)
-                {
-                    data = data + caracteres[i].ToString();
-                }
-                DataVoo = DateConverter(data);
-                for (int i = 26; i <= 37; i++)
-                {
-                    data = data + caracteres[i].ToString();
-                }
-                DataCadastro = DateConverter(data);
-                Situacao = caracteres[38];
-                Voo V = new Voo(IDVoo, Destino, Aeronave, DataVoo, DataCadastro, Situacao);
-                listVoo.Add(V);
+            }
+            catch (Exception )
+            {
+                Console.WriteLine("Mensagem de Erro: Não foi possível carregar dados do arquivo Voo.dat");
             }
             //PassagemVoo
-            linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\PassagemVoo.dat");
-            foreach (var linha in linhas)
+            try
             {
-                caracteres = linha.ToCharArray();
-                for (int i = 0; i < 5; i++)
+                linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\PassagemVoo.dat");
+                foreach (var linha in linhas)
                 {
-                    IDPassagem = IDPassagem + caracteres[i].ToString();
+                    caracteres = linha.ToCharArray();
+                    for (int i = 0; i < 5; i++)
+                    {
+                        IDPassagem = IDPassagem + caracteres[i].ToString();
+                    }
+                    for (int i = 6; i <= 10; i++)
+                    {
+                        IDVoo = IDVoo + caracteres[i].ToString();
+                    }
+                    for (int i = 11; i <= 22; i++)
+                    {
+                        data = data + caracteres[i].ToString();
+                    }
+                    DataUltimaOperacao = DateConverter(data);
+                    for (int i = 22; i <= 28; i++)
+                    {
+                        valor = valor + caracteres[i].ToString();
+                    }
+                    Valor = float.Parse(valor);
+                    Situacao = caracteres[29];
+                    PassagemVoo PV = new PassagemVoo(IDPassagem, IDVoo, DataUltimaOperacao, Valor, Situacao);
+                    listPassagemVoo.Add(PV);
                 }
-                for (int i = 6; i <= 10; i++)
-                {
-                    IDVoo = IDVoo + caracteres[i].ToString();
-                }
-                for (int i = 11; i <= 22; i++)
-                {
-                    data = data + caracteres[i].ToString();
-                }
-                DataUltimaOperacao = DateConverter(data);
-                for (int i = 22; i <= 28; i++)
-                {
-                    valor = valor + caracteres[i].ToString();
-                }
-                Valor = float.Parse(valor);
-                Situacao = caracteres[29];
-                PassagemVoo PV = new PassagemVoo(IDPassagem, IDVoo, DataUltimaOperacao, Valor, Situacao);
-                listPassagemVoo.Add(PV);
+            }
+            catch (Exception )
+            {
+                Console.WriteLine("Mensagem de Erro: Não foi possível carregar dados do arquivo PassagemVoo.dat ");
             }
             //Venda
-            linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\Venda.dat");
-            foreach (var linha in linhas)
+            try
             {
-                caracteres = linha.ToCharArray();
-                for (int i = 0; i < 4; i++)
+                linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\Venda.dat");
+                foreach (var linha in linhas)
                 {
-                    IDVenda = IDVenda + caracteres[i].ToString();
+                    caracteres = linha.ToCharArray();
+                    for (int i = 0; i < 4; i++)
+                    {
+                        IDVenda = IDVenda + caracteres[i].ToString();
+                    }
+                    for (int i = 5; i <= 16; i++)
+                    {
+                        data = data + caracteres[i].ToString();
+                    }
+                    DataVenda = DateConverter(data);
+                    for (int i = 17; i <= 27; i++)
+                    {
+                        CpfPassageiro = CpfPassageiro + caracteres[i].ToString();
+                    }
+                    for (int i = 27; i <= 34; i++)
+                    {
+                        valor = valor + caracteres[i].ToString();
+                    }
+                    Valor = float.Parse(valor);
+                    Venda Vend = new Venda(IDVenda, DataVenda, CpfPassageiro, Valor);
+                    listVenda.Add(Vend);
                 }
-                for (int i = 5; i <= 16; i++)
-                {
-                    data = data + caracteres[i].ToString();
-                }
-                DataVenda = DateConverter(data);
-                for (int i = 17; i <= 27; i++)
-                {
-                    CpfPassageiro = CpfPassageiro + caracteres[i].ToString();
-                }
-                for (int i = 27; i <= 34; i++)
-                {
-                    valor = valor + caracteres[i].ToString();
-                }
-                Valor = float.Parse(valor);
-                Venda Vend = new Venda(IDVenda, DataVenda, CpfPassageiro, Valor);
-                listVenda.Add(Vend);
+            }
+            catch (Exception )
+            {
+                Console.WriteLine("Mensagem de Erro: Não foi possível carregar dados do arquivo Venda.dat");
             }
             //ItemVenda
-            linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\ItemVenda.dat");
-            foreach (var linha in linhas)
+            try
             {
-                caracteres = linha.ToCharArray();
-                for (int i = 0; i < 4; i++)
+                linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\ItemVenda.dat");
+                foreach (var linha in linhas)
                 {
-                    IDItemVenda = IDItemVenda + caracteres[i].ToString();
+                    caracteres = linha.ToCharArray();
+                    for (int i = 0; i < 4; i++)
+                    {
+                        IDItemVenda = IDItemVenda + caracteres[i].ToString();
+                    }
+                    for (int i = 5; i <= 10; i++)
+                    {
+                        IDPassagem = IDPassagem + caracteres[i].ToString();
+                    }
+                    for (int i = 11; i <= 17; i++)
+                    {
+                        valor = valor + caracteres[i].ToString();
+                    }
+                    Valor = float.Parse(valor);
+                    ItemVenda IV = new ItemVenda(IDItemVenda, IDPassagem, Valor);
+                    listItemVenda.Add(IV);
                 }
-                for (int i = 5; i <= 10; i++)
-                {
-                    IDPassagem = IDPassagem + caracteres[i].ToString();
-                }
-                for (int i = 11; i <= 17; i++)
-                {
-                    valor = valor + caracteres[i].ToString();
-                }
-                Valor = float.Parse(valor);
-                ItemVenda IV = new ItemVenda(IDItemVenda, IDPassagem, Valor);
-                listItemVenda.Add(IV);
+            }
+            catch (Exception )
+            {
+                Console.WriteLine("Mensagem de Erro: Não foi possível carregar dados do arquivo ItemVenda.dat");
             }
             //Restritos
-            linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\Restritos.dat");
-            foreach (var linha in linhas)
+            try
             {
-                caracteres = linha.ToCharArray();
-                for (int i = 0; i < 10; i++)
+                linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\Restritos.dat");
+                foreach (var linha in linhas)
                 {
-                    cpf = cpf + caracteres[i].ToString();
+                    listRestritos.Add(linha);
                 }
+            }
+            catch (Exception )
+            {
+                Console.WriteLine("Mensagem de Erro: Não foi possível carregar dados do arquivo Restritos.dat");
             }
             //Bloqueados
-            linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\Bloqueados.dat");
-            foreach (var linha in linhas)
+            try
             {
-                caracteres = linha.ToCharArray();
-                for (int i = 0; i < 13; i++)
+                linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\Bloqueados.dat");
+                foreach (var linha in linhas)
                 {
-                    Cnpj = Cnpj + caracteres[i].ToString();
+                    listBloqueados.Add(linha);
                 }
             }
+            catch (Exception )
+            {
+                Console.WriteLine("Mensagem de Erro: Não foi possível carregar dados do arquivo Bloqueados.dat" );
+            }
+            //Destino
+            try
+            {
+                linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\Destino.dat");
+                foreach (var linha in linhas)
+                {
+                    listDestino.Add(linha);
+                }
+            }
+            catch (Exception )
+            {
+                Console.WriteLine("Mensagem de Erro: Não foi possível carregar dados do arquivo Destino.dat");
+            }
         }
+
+
         #endregion GravarCarregar
 
         static bool PausaMensagem()
@@ -410,37 +479,35 @@ namespace POnTheFly
 
             bool encontrado;
 
-
-
             bool retornar = true;
             int qtdnumerosiguais = 0;
 
             switch (entrada)
             {
 
-              /*  case "menu":
+                /*  case "menu":
 
-                    #region Menu
+                      #region Menu
 
-                    do
-                    {
-                        string menu;
-                        try
-                        {
-                            menu = Console.ReadLine();
-                            return menu;
-                        }
-                        catch (Exception)
-                        {
-                            Console.WriteLine("Digite uma opção válida!");
-                            return null;
-                        }
+                      do
+                      {
+                          string menu;
+                          try
+                          {
+                              menu = Console.ReadLine();
+                              return menu;
+                          }
+                          catch (Exception)
+                          {
+                              Console.WriteLine("Digite uma opção válida!");
+                              return null;
+                          }
 
-                        return null;
+                          return null;
 
-                        #endregion
+                          #endregion
 
-                */
+                  */
                 case "cpf":
 
                     #region CPF;
@@ -815,7 +882,7 @@ namespace POnTheFly
                                     {
                                         int qtdfaltante = qtdmax - qtdescrito;
 
-                                        for (int i = 1; i < qtdfaltante; i++)
+                                        for (int i = 0; i <= qtdfaltante; i++)
                                         {
                                             nome = nome + " ";
                                         }
@@ -858,6 +925,7 @@ namespace POnTheFly
                     #region Sexo
                     do
                     {
+                        Console.Clear();
                         Console.WriteLine("Informe o sexo:\n[M] - Masculino\n[F] - Feminino\n[N] - Não informar");
                         ConsoleKeyInfo op = Console.ReadKey(true);
 
@@ -911,7 +979,6 @@ namespace POnTheFly
                             encontrado = false;
                             string[] vetordata = new string[] { "_", "_", "_", "_", "_", "_", "_", "_" };
                             //List<string> datanumeros = new List<string> { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-
                             static void AtualizarTela(int i, string[] vetordata)
                             {
                                 Console.Clear();
@@ -919,33 +986,46 @@ namespace POnTheFly
                                 Console.WriteLine(vetordata[0] + vetordata[1] + "/" + vetordata[2] + vetordata[3] + "/" + vetordata[4] + vetordata[5] + vetordata[6] + vetordata[7]);
                                 Console.CursorVisible = false;
                             }
-
                             for (int i = 0; i < 8; i++)
                             {
                                 AtualizarTela(i, vetordata);
-
                                 teclaData = Console.ReadKey(true);
+                                //Console.WriteLine(teclaData.Key);
+                                //Console.ReadKey();
                                 vetortecla = teclaData.Key.ToString().ToCharArray();
-
-                                if (vetornumeros.Contains(vetortecla[1].ToString()) == true)
+                                if (vetortecla[0] == 'N')
                                 {
-                                    encontrado = true;
-                                    vetordata[i] = vetortecla[1].ToString();
-                                    DataNascimento = DataNascimento + vetordata[i];
+                                    if (vetornumeros.Contains(vetortecla[6].ToString()) == true)
+                                    {
+                                        encontrado = true;
+                                        vetordata[i] = vetortecla[6].ToString();
+                                        DataNascimento = DataNascimento + vetordata[i];
+                                    }
+                                    else
+                                    {
+                                        encontrado = false;
+                                        break;
+                                    }
+                                    AtualizarTela(i, vetordata);
                                 }
                                 else
                                 {
-                                    encontrado = false;
-                                    break;
+                                    if (vetornumeros.Contains(vetortecla[1].ToString()) == true)
+                                    {
+                                        encontrado = true;
+                                        vetordata[i] = vetortecla[1].ToString();
+                                        DataNascimento = DataNascimento + vetordata[i];
+                                    }
+                                    else
+                                    {
+                                        encontrado = false;
+                                        break;
+                                    }
+                                    AtualizarTela(i, vetordata);
                                 }
-
-                                AtualizarTela(i, vetordata);
                             }
-
                             if (encontrado == true)
                             {
-
-                                //"02021992"
                                 if (DateTime.Compare(DateConverter(DataNascimento), System.DateTime.Now) < 0)
                                 {
                                     string anonasc = (vetordata[4].ToString() + vetordata[5].ToString() + vetordata[6].ToString() + vetordata[7].ToString());
@@ -978,8 +1058,8 @@ namespace POnTheFly
                             retornar = PausaMensagem();
                         }
                     } while (retornar == false);
-
                     return null;
+
 
 
                 #endregion
@@ -1208,11 +1288,11 @@ namespace POnTheFly
                 string nome, cpf;
                 string dataNascimento;
                 char sexo;
-            
+
                 // Passageiro novoPassageiro;
-               
+
                 Console.Clear();
-               
+
                 nome = ValidarEntrada("nome");
                 if (nome == null) TelaInicialPassageiros();
 
@@ -1221,12 +1301,12 @@ namespace POnTheFly
 
                 dataNascimento = ValidarEntrada("datanascimento");
                 if (dataNascimento == null) TelaInicialPassageiros();
-                
+
                 sexo = char.Parse(ValidarEntrada("sexo"));
                 if (sexo.Equals(null)) TelaInicialPassageiros();
 
                 Console.WriteLine("\nPassageiro Cadastrado com Sucesso!");
-                Passageiro passageiro = new Passageiro(cpf, nome, DateConverter(dataNascimento), sexo,System.DateTime.Now,System.DateTime.Now,'A');
+                Passageiro passageiro = new Passageiro(cpf, nome, DateConverter(dataNascimento), sexo, System.DateTime.Now, System.DateTime.Now, 'A');
                 listPassageiro.Add(passageiro);
                 GravarPassageiro(listPassageiro);
                 Pausa();
@@ -1349,6 +1429,10 @@ namespace POnTheFly
         static void Main(string[] args)
         {
             System.IO.Directory.CreateDirectory(@"C:\DBOnTheFly");
+            CarregarArquivos();
+            Pausa();
+            //Console.Write(listPassageiro[0].ToString());
+           // Console.ReadKey();
             TelaInicial();
         }
     }

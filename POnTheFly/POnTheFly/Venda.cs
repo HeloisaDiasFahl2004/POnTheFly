@@ -21,7 +21,7 @@ namespace Proj_POG_OnTheFly
         }
         public override string ToString()
         {
-            return "\nDADOS VENDA: \nID Venda: " + IDVenda + "\nData Venda: " + DataVenda.ToString("dd/MM/yyyyHH:mm") + "\nPassageiro: " + Passageiro + "\nValor Total: " + ValorTotal;
+            return "\nDADOS VENDA: \nID Venda: " + IDVenda + "\nData Venda: " + DataVenda.ToString("dd/MM/yyyy HH:mm") + "\nPassageiro: " + Passageiro + "\nValor Total: " + ValorTotal;
         }
         public string ObterDados()
         {

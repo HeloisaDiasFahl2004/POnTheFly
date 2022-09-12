@@ -21,11 +21,11 @@ namespace Proj_POG_OnTheFly
             this.IDAeronave = idAeronave;
             this.DataVoo = dataVoo;
             this.DataCadastro = System.DateTime.Now;
-            this.Situacao = 'A'; //Ativo,Cancelado
+            this.Situacao = Situacao; //Ativo,Cancelado
         }
         public override string ToString()
         {
-            return "\nDADOS VOO: \nID Voo: " + IDVoo + "\nDestino: " + Destino + "\nID Aeronave: " + IDAeronave + "\nData Voo: " + DataVoo.ToString("dd/MM/yyyy") + "\nData Cadastro: " + DataCadastro.ToString("dd/MM/yyyy") + "\nSituação: " + Situacao;
+            return "\nDADOS VOO: \nID Voo: " + IDVoo + "\nDestino: " + Destino + "\nID Aeronave: " + IDAeronave + "\nData Voo: " + DataVoo.ToString("dd/MM/yyyy HH:mm") + "\nData Cadastro: " + DataCadastro.ToString("dd/MM/yyyy HH:mm") + "\nSituação: " + Situacao;
         }
         public string ObterDados()
         {

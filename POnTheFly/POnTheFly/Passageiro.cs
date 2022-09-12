@@ -30,7 +30,7 @@ namespace Proj_POG_OnTheFly
         }
         public override string ToString() // Console
         {
-            return "\nDADOS PASSAGEIRO: \nNome: " + Nome + "\nCPF: " + Cpf + "\nData Nascimento: " + DataNascimento.ToString("dd/MM/yyyy") + "\nSexo: " + Sexo + "\nData Cadastro: " + DataCadastro.ToString("dd/MM/yyyyHH:mm") + "\nData Última Compra: " + DataUltimaCompra.ToString("dd/MM/yyyyHH:mm") + "\nSituação: " + Situacao;
+            return "\nDADOS PASSAGEIRO: \nNome: " + Nome + "\nCPF: " + Cpf + "\nData Nascimento: " + DataNascimento.ToString("dd/MM/yyyy") + "\nSexo: " + Sexo + "\nData Cadastro: " + DataCadastro.ToString("dd/MM/yyyy HH:mm") + "\nData Última Compra: " + DataUltimaCompra.ToString("dd/MM/yyyy HH:mm") + "\nSituação: " + Situacao;
         }
         public string ObterDados() // Arquivo Texto
         {

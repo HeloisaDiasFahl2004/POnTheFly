@@ -22,11 +22,11 @@ namespace Proj_POG_OnTheFly
             this.DataAbertura = DataAbertura;
             this.UltimoVoo = System.DateTime.Now;
             this.DataCadastro = System.DateTime.Now;
-            this.Situacao = 'A'; //Ativo,Inativo
+            this.Situacao = Situacao; //Ativo,Inativo
         }
         public override string ToString()
         {
-            return "\nDADOS COMPANHIA AÉREA: \nRazão Social: " + RazaoSocial + "\nCNPJ: " + Cnpj + "\nData Abertura: " + DataAbertura.ToString("dd/MM/yyyy") + "\nData Cadastro: " + DataCadastro.ToString("dd/MM/yyyyHH:mm") + "\nÚltimo Voo: " + UltimoVoo.ToString("dd/MM/yyyyHH:mm") + "\nSituação: " + Situacao;
+            return "\nDADOS COMPANHIA AÉREA: \nRazão Social: " + RazaoSocial + "\nCNPJ: " + Cnpj + "\nData Abertura: " + DataAbertura.ToString("dd/MM/yyyy") + "\nData Cadastro: " + DataCadastro.ToString("dd/MM/yyyy HH:mm") + "\nÚltimo Voo: " + UltimoVoo.ToString("dd/MM/yyyy HH:mm") + "\nSituação: " + Situacao;
         }
         public string ObterDados()
         {
