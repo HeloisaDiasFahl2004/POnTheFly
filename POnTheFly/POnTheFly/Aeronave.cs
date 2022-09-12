@@ -15,7 +15,7 @@ namespace Proj_POG_OnTheFly
         public DateTime DataCadastro { get; set; }
         public char Situacao { get; set; }
 
-        public Aeronave(string inscricao, int capacidade, int assentosOcupados, char situacao)
+        public Aeronave(string inscricao, int capacidade, int assentosOcupados,DateTime UltimaVenda,DateTime Cadastro, char situacao)
         {
             this.Inscricao = inscricao;
             this.Capacidade = capacidade;
@@ -26,11 +26,11 @@ namespace Proj_POG_OnTheFly
         }
         public override string ToString()
         {
-            return "\nDADOS AERONAVE: \nInscrição: " + Inscricao + "\nCapacidade: " + Capacidade + "\nAssentos Ocupados: " + AssentosOcupados + "\nData Cadastro: " + DataCadastro + "\nÚltima Venda: " + UltimaVenda + "\nSituação: " + Situacao;
+            return "\nDADOS AERONAVE: \nInscrição: " + Inscricao + "\nCapacidade: " + Capacidade + "\nAssentos Ocupados: " + AssentosOcupados + "\nData Cadastro: " + DataCadastro.ToString("dd/MM/yyyyHH:mm") + "\nÚltima Venda: " + UltimaVenda.ToString("dd/MM/yyyyHH:mm") + "\nSituação: " + Situacao;
         }
         public string ObterDados()
         {
-            return Inscricao + Capacidade + AssentosOcupados + UltimaVenda + DataCadastro + Situacao;
+            return Inscricao + Capacidade + AssentosOcupados + UltimaVenda.ToString("ddMMyyyyHHmm") + DataCadastro.ToString("ddMMyyyyHHmm") + Situacao;
         }
     }
 }

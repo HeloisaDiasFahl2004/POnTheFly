@@ -13,7 +13,7 @@ namespace Proj_POG_OnTheFly
         public DateTime DataUltimaOperacao { get; set; }
         public float Valor { get; set; }
         public char Situacao { get; set; }
-        public PassagemVoo(string idPassagem, string idVoo, DateTime dataUltimaOperacao, float valor)
+        public PassagemVoo(string idPassagem, string idVoo, DateTime dataUltimaOperacao, float valor, char Situacao)
         {
             this.IDPassagem = idPassagem;
             this.IDVoo = idVoo;
@@ -23,11 +23,11 @@ namespace Proj_POG_OnTheFly
         }
         public override string ToString()
         {
-            return "\nDADOS PASSAGEM: \nID Passagem: " + IDPassagem + "\nID VOO: " + IDVoo + "\nData Última Operação: " + DataUltimaOperacao + "\nValor: " + Valor + "\nSituação: " + Situacao;
+            return "\nDADOS PASSAGEM: \nID Passagem: " + IDPassagem + "\nID VOO: " + IDVoo + "\nData Última Operação: " + DataUltimaOperacao.ToString("dd/MM/yyyyHH:mm") + "\nValor: " + Valor + "\nSituação: " + Situacao;
         }
         public string ObterDados()
         {
-            return IDPassagem + IDVoo + DataUltimaOperacao + Valor + Situacao;
+            return IDPassagem + IDVoo + DataUltimaOperacao.ToString("ddMMyyyyHHmm") + Valor + Situacao;
         }
     }
 }

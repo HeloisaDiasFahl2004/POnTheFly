@@ -15,7 +15,7 @@ namespace Proj_POG_OnTheFly
         public DateTime DataCadastro { get; set; }
         public char Situacao { get; set; }
 
-        public CompanhiaAerea(string cnpj, string razaoSocial, DateTime DataAbertura)
+        public CompanhiaAerea(string cnpj, string razaoSocial, DateTime DataAbertura,DateTime UltimoVoo, DateTime DataCadastro, char Situacao)
         {
             this.Cnpj = cnpj;
             this.RazaoSocial = razaoSocial;
@@ -26,11 +26,11 @@ namespace Proj_POG_OnTheFly
         }
         public override string ToString()
         {
-            return "\nDADOS COMPANHIA AÉREA: \nRazão Social: " + RazaoSocial + "\nCNPJ: " + Cnpj + "\nData Abertura: " + DataAbertura + "\nData Cadastro: " + DataCadastro + "\nÚltimo Voo: " + UltimoVoo + "\nSituação: " + Situacao;
+            return "\nDADOS COMPANHIA AÉREA: \nRazão Social: " + RazaoSocial + "\nCNPJ: " + Cnpj + "\nData Abertura: " + DataAbertura.ToString("dd/MM/yyyy") + "\nData Cadastro: " + DataCadastro.ToString("dd/MM/yyyyHH:mm") + "\nÚltimo Voo: " + UltimoVoo.ToString("dd/MM/yyyyHH:mm") + "\nSituação: " + Situacao;
         }
         public string ObterDados()
         {
-            return Cnpj + RazaoSocial + DataAbertura + UltimoVoo + DataCadastro + Situacao;
+            return Cnpj + RazaoSocial + DataAbertura + UltimoVoo.ToString("ddMMyyyyHHmm") + DataCadastro.ToString("ddMMyyyyHHmm") + Situacao;
         }
 
     }

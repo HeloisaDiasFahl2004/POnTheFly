@@ -16,7 +16,9 @@ namespace Proj_POG_OnTheFly
         public DateTime DataCadastro { get; set; }
         public char Situacao { get; set; }
 
-        public Passageiro(string cpf, string nome, DateTime dataNascimento, char sexo)
+    
+   
+        public Passageiro(string cpf, string nome, DateTime dataNascimento, char sexo,DateTime UltimaCompra,DateTime DataCadastro, char Situacao )
         {
             this.Cpf = cpf;
             this.Nome = nome;
@@ -24,15 +26,15 @@ namespace Proj_POG_OnTheFly
             this.Sexo = sexo;
             this.DataUltimaCompra = System.DateTime.Now;//Data do sistema
             this.DataCadastro = System.DateTime.Now;
-            this.Situacao = 'A'; // Ativo,Inativo
+            this.Situacao = Situacao; // Ativo,Inativo
         }
         public override string ToString() // Console
         {
-            return "\nDADOS PASSAGEIRO: \nNome: " + Nome + "\nCPF: " + Cpf + "\nData Nascimento: " + DataNascimento + "\nSexo: " + Sexo + "\nData Cadastro: " + DataCadastro + "\nData Última Compra: " + DataUltimaCompra + "\nSituação: " + Situacao;
+            return "\nDADOS PASSAGEIRO: \nNome: " + Nome + "\nCPF: " + Cpf + "\nData Nascimento: " + DataNascimento.ToString("dd/MM/yyyy") + "\nSexo: " + Sexo + "\nData Cadastro: " + DataCadastro.ToString("dd/MM/yyyyHH:mm") + "\nData Última Compra: " + DataUltimaCompra.ToString("dd/MM/yyyyHH:mm") + "\nSituação: " + Situacao;
         }
         public string ObterDados() // Arquivo Texto
         {
-            return Cpf + Nome + DataNascimento + Sexo + DataUltimaCompra + DataCadastro + Situacao;
+            return Cpf + Nome + DataNascimento.ToString("ddMMyyyy") + Sexo + DataUltimaCompra.ToString("ddMMyyyyHHmm") + DataCadastro.ToString("ddMMyyyyHHmm") + Situacao;
         }
     }
 }

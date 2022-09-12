@@ -14,7 +14,7 @@ namespace Proj_POG_OnTheFly
         public DateTime DataVoo { get; set; }
         public DateTime DataCadastro { get; set; }
         public char Situacao { get; set; }
-        public Voo(string idVoo, string destino, string idAeronave, DateTime dataVoo)
+        public Voo(string idVoo, string destino, string idAeronave, DateTime dataVoo, DateTime DataCadastro, char Situacao)
         {
             this.IDVoo = idVoo;
             this.Destino = destino;
@@ -25,11 +25,11 @@ namespace Proj_POG_OnTheFly
         }
         public override string ToString()
         {
-            return "\nDADOS VOO: \nID Voo: " + IDVoo + "\nDestino: " + Destino + "\nID Aeronave: " + IDAeronave + "\nData Voo: " + DataVoo + "\nData Cadastro: " + DataCadastro + "\nSituação: " + Situacao;
+            return "\nDADOS VOO: \nID Voo: " + IDVoo + "\nDestino: " + Destino + "\nID Aeronave: " + IDAeronave + "\nData Voo: " + DataVoo.ToString("dd/MM/yyyy") + "\nData Cadastro: " + DataCadastro.ToString("dd/MM/yyyy") + "\nSituação: " + Situacao;
         }
         public string ObterDados()
         {
-            return this.IDVoo + Destino + IDAeronave + DataVoo + DataCadastro + Situacao;
+            return this.IDVoo + Destino + IDAeronave + DataVoo.ToString("ddMMyyyyHHmm") + DataCadastro.ToString("ddMMyyyyHHmm") + Situacao;
         }
     }
 }
