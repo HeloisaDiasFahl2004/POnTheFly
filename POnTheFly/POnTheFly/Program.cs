@@ -19,7 +19,7 @@ namespace POnTheFly
         static List<string> listRestritos = new List<string>();
         static List<string> listBloqueados = new List<string>();
         static List<string> listDestino = new List<string>();
-        
+
         #region Conversoes Datas
         static public DateTime DateConverter(string data)
         {
@@ -84,7 +84,7 @@ namespace POnTheFly
 
         #region GravarCarregar
         //Metodo para gravar o arquivo no diretorio em .dat
-        static void GravarPassageiro(List<Passageiro> listPassageiro)
+        static void GravarPassageiro()
         {
             StreamWriter gravPassageiro = new StreamWriter(@"C:\DBOnTheFly\Passageiro.dat");
             foreach (var passageiro in listPassageiro)
@@ -93,7 +93,7 @@ namespace POnTheFly
             }
             gravPassageiro.Close();
         }
-        static void GravarCompanhiaAerea(List<CompanhiaAerea> listCompanhia)
+        static void GravarCompanhiaAerea()
         {
             StreamWriter gravCompAerea = new StreamWriter(@"C:\DBOnTheFly\CompanhiaAerea.dat");
             foreach (var companhiaaerea in listCompanhia)
@@ -101,7 +101,7 @@ namespace POnTheFly
                 gravCompAerea.WriteLine(companhiaaerea.ObterDados());
             }
         }
-        static void GravarAeronaves(List<Aeronave> listAeronaves)
+        static void GravarAeronaves()
         {
             StreamWriter gravAeronaves = new StreamWriter(@"C:\DBOnTheFly\Aeronaves.dat");
             foreach (var aeronaves in listAeronaves)
@@ -109,7 +109,7 @@ namespace POnTheFly
                 gravAeronaves.WriteLine(aeronaves.ObterDados());
             }
         }
-        static void GravarVoo(List<Voo> listVoo)
+        static void GravarVoo()
         {
             StreamWriter gravVoo = new StreamWriter(@"C:\DBOnTheFly\Voo.dat");
             foreach (var voo in listVoo)
@@ -117,7 +117,7 @@ namespace POnTheFly
                 gravVoo.WriteLine(voo.ObterDados());
             }
         }
-        static void GravarPassagem(List<PassagemVoo> listPassagem)
+        static void GravarPassagem()
         {
             StreamWriter gravPassagem = new StreamWriter(@"C:\DBOnTheFly\Passagem.dat");
             foreach (var passagem in listPassagem)
@@ -125,7 +125,7 @@ namespace POnTheFly
                 gravPassagem.WriteLine(passagem.ObterDados());
             }
         }
-        static void GravarVenda(List<Venda> listVenda)
+        static void GravarVenda()
         {
             StreamWriter gravVenda = new StreamWriter(@"C:\DBOnTheFly\Venda.dat");
             foreach (var venda in listVenda)
@@ -133,7 +133,7 @@ namespace POnTheFly
                 gravVenda.WriteLine(venda.ObterDados());
             }
         }
-        static void GravarItemVenda(List<ItemVenda> listItemVenda)
+        static void GravarItemVenda()
         {
             StreamWriter gravItemVenda = new StreamWriter(@"C:\DBOnTheFly\ItemVenda.dat");
             foreach (var itemvenda in listItemVenda)
@@ -141,7 +141,7 @@ namespace POnTheFly
                 gravItemVenda.WriteLine(itemvenda.ObterDados());
             }
         }
-        static void GravarRestritos(List<string> listRestritos)
+        static void GravarRestritos()
         {
             StreamWriter gravRestritos = new StreamWriter(@"C:\DBOnTheFly\Restritos.dat");
             foreach (var restritos in listRestritos)
@@ -149,7 +149,7 @@ namespace POnTheFly
                 gravRestritos.WriteLine(restritos);
             }
         }
-        static void GravarBloqueados(List<string> listBloqueados)
+        static void GravarBloqueados()
         {
             StreamWriter gravBloqueados = new StreamWriter(@"C:\DBOnTheFly\Bloqueados.dat");
             foreach (var bloqueados in listBloqueados)
@@ -491,7 +491,7 @@ namespace POnTheFly
 
         #endregion GravarCarregar
 
-        #region Validacoes
+        #region Validacao
         static public string ValidarEntrada(string entrada)
         {
             string[] vetorletras = new string[] {"Ç","ç","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S",
@@ -979,6 +979,7 @@ namespace POnTheFly
                     {
                         Console.Clear();
                         Console.WriteLine("Informe o sexo:\n[M] - Masculino\n[F] - Feminino\n[N] - Não informar");
+                        Console.CursorVisible = false;
                         ConsoleKeyInfo op = Console.ReadKey(true);
 
                         //Verificar se tecla pressionada foi M / F ou N (independente do CAPSLOCK estar ativado!)
@@ -1236,81 +1237,6 @@ namespace POnTheFly
                     } while (retornar == false);
 
                     return null;
-                case "idaeronave":
-                    #region IdAeronave
-                    //Os prefixos de nacionalidade que identificam aeronaves privadas e comerciais do Brasil são PT, PR, PP, PS e PH.
-                    string[] prefixoaeronave = new string[] { "PT", "PR", "PP", "PS", "PH" };
-                    //A Agência Nacional de Aviação Civil(Anac) proíbe o registro de marcas de identificação em aeronaves iniciadas com a letra Q
-                    //ou que tenham W como segunda letra.Os arranjos SOS, XXX, PAN, TTT, VFR, IFR, VMC e IMC não podem ser utilizados.
-                    string[] idproibido = new string[] { "SOS", "XXX", "PAN", "TTT", "VFR", "IFR", "VMC", "IMC" };
-                    string idaeronave;
-                    do
-                    {
-                        Console.Write("Informe o código Nacional de identificação da Aeronave: ");
-                        try
-                        {
-                            idaeronave = Console.ReadLine().ToUpper();
-                            char[] letras = idaeronave.ToCharArray();
-                            //Verifica se tem 6 caracteres obrigatoriamente:
-                            if (letras.Length == 6)
-                            {
-                                //verifica se foi inserido o traço - na inscrição:
-                                if (letras[2] == '-')
-                                {
-                                    //Verifica se tem Q e W onde não pode na matrícula da aeronave:
-                                    if (letras[3] != 'Q' && letras[4] != 'W')
-                                    {
-                                        //Separa a escrita depois do traço, referente à matrícula do avião:
-                                        string matriculaaviao = letras[3].ToString() + letras[4].ToString() + letras[5].ToString();
-                                        //Verifica se a matrícula possui um nome proibido, contido no vetor idproibido;
-                                        if (idproibido.Contains(matriculaaviao) == false)
-                                        {
-                                            //Separa os 2 primeiros prefixos e guarda na variável prefixoaviao:
-                                            string prefixoaviao = letras[0].ToString() + letras[1].ToString();
-                                            //Verifica se os 2 primeiros prefixos são válidos:
-                                            if (prefixoaeronave.Contains(prefixoaviao) == true)
-                                            {
-                                                return idaeronave;
-                                            }
-                                            else
-                                            {
-                                                Console.WriteLine("Os prefixos devem ser obrigatóriamente PT ou PR ou PP ou PS ou PH ");
-                                                retornar = PausaMensagem();
-                                            }
-                                        }
-                                        else
-                                        {
-                                            Console.WriteLine("As matrículas SOS, XXX, PAN, TTT, VFR, IFR, VMC e IMC não podem ser utilizadas");
-                                            retornar = PausaMensagem();
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Não é permitido a letra Q como primeira letra e nem a letra W como segunda letra da matrícula da aeronave");
-                                        retornar = PausaMensagem();
-                                    }
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Digite obrigatóriamente o traço - após prefixos de nacionalidade");
-                                    retornar = PausaMensagem();
-                                }
-                            }
-                            else
-                            {
-                                Console.WriteLine("Quantidade incorreta de dígitos de identificação");
-                                retornar = PausaMensagem();
-                            }
-                        }
-                        catch (Exception)
-                        {
-                            Console.WriteLine("Insira um valor válido!");
-                            retornar = PausaMensagem();
-                        }
-                    } while (retornar == false);
-                    //Retorna nulo se o usuário quiser cancelar no meio do cadastro;
-                    return null;
-                #endregion
 
 
                 #endregion
@@ -1482,7 +1408,551 @@ namespace POnTheFly
                 #endregion
 
 
-                default: return null;
+                case "idaeronave":
+
+                    #region IdAeronave
+
+                    //Os prefixos de nacionalidade que identificam aeronaves privadas e comerciais do Brasil são PT, PR, PP, PS e PH.
+                    string[] prefixoaeronave = new string[] { "PT", "PR", "PP", "PS", "PH" };
+
+                    //A Agência Nacional de Aviação Civil(Anac) proíbe o registro de marcas de identificação em aeronaves iniciadas com a letra Q
+                    //ou que tenham W como segunda letra.Os arranjos SOS, XXX, PAN, TTT, VFR, IFR, VMC e IMC não podem ser utilizados.
+                    string[] idproibido = new string[] { "SOS", "XXX", "PAN", "TTT", "VFR", "IFR", "VMC", "IMC" };
+                    encontrado = true;
+                    string idaeronave;
+
+                    do
+                    {
+                        Console.Write("Informe o código Nacional de identificação da Aeronave: ");
+                        try
+                        {
+                            idaeronave = Console.ReadLine().ToUpper();
+
+                            char[] letras = idaeronave.ToCharArray();
+
+                            //Verifica se tem 6 caracteres obrigatoriamente:
+                            if (letras.Length == 6)
+                            {
+                                //verifica se foi inserido o traço - na inscrição:
+                                if (letras[2] == '-')
+                                {
+                                    //Verifica se tem Q e W onde não pode na matrícula da aeronave:
+                                    if (letras[3] != 'Q' && letras[4] != 'W')
+                                    {
+                                        //Separa a escrita depois do traço, referente à matrícula do avião:
+                                        string matriculaaviao = letras[3].ToString() + letras[4].ToString() + letras[5].ToString();
+                                        //Verifica se a matrícula possui um nome proibido, contido no vetor idproibido;
+                                        if (idproibido.Contains(matriculaaviao) == false)
+                                        {
+                                            //Separa os 2 primeiros prefixos e guarda na variável prefixoaviao:
+                                            string prefixoaviao = letras[0].ToString() + letras[1].ToString();
+                                            //Verifica se os 2 primeiros prefixos são válidos:
+                                            if (prefixoaeronave.Contains(prefixoaviao) == true)
+                                            {
+                                                foreach (var aeronave in listAeronaves)
+                                                {
+                                                    if (aeronave.Inscricao == idaeronave)
+                                                    {
+                                                        encontrado = true;
+                                                        break;
+                                                    }
+                                                    else
+                                                    {
+                                                        encontrado = false;
+                                                    }
+                                                }
+
+                                                if (encontrado == false)
+                                                {
+                                                    return idaeronave;
+                                                }
+                                                else
+                                                {
+                                                    Console.WriteLine("Essa Aeronave já possui cadastro!");
+                                                    retornar = PausaMensagem();
+                                                }
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("Os prefixos devem ser obrigatóriamente PT ou PR ou PP ou PS ou PH ");
+                                                retornar = PausaMensagem();
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("As matrículas SOS, XXX, PAN, TTT, VFR, IFR, VMC e IMC não podem ser utilizadas");
+                                            retornar = PausaMensagem();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Não é permitido a letra Q como primeira letra e nem a letra W como segunda letra da matrícula da aeronave");
+                                        retornar = PausaMensagem();
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Digite obrigatóriamente o traço - após prefixos de nacionalidade");
+                                    retornar = PausaMensagem();
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Digite obrigatóriamente o traço - Quantidade incorreta de dígitos de identificação.");
+                                retornar = PausaMensagem();
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine("Insira um valor válido!");
+                            retornar = PausaMensagem();
+                        }
+                    } while (retornar == false);
+
+                    //Retorna nulo se o usuário quiser cancelar no meio do cadastro;
+                    return null;
+
+                #endregion
+
+
+                case "capacidade":
+
+                    #region Capacidade
+
+                    encontrado = false;
+                    string capacidade;
+                    string[] vetorcapacidade = new string[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", " " };
+                    do
+                    {
+                        Console.Write("Informe a quantidade de passageiros que a aeronave comporta: ");
+                        try
+                        {
+                            capacidade = Console.ReadLine();
+
+                            //Cria um vetor onde cada casa é um caracter:
+                            char[] caracteres = capacidade.ToString().ToCharArray();
+                            char[] caraccapacidade = new char[3];
+
+                            //Verifica se tem no máximo 3 caracteres obrigatoriamente:
+                            if (caracteres.Length > 0 && caracteres.Length <= 3)
+                            {
+                                if (caracteres.Length == 1)
+                                {
+                                    caraccapacidade[0] = ' ';
+                                    caraccapacidade[1] = ' ';
+                                    caraccapacidade[2] = caracteres[0];
+                                }
+                                else
+                                {
+                                    if (caracteres.Length == 2)
+                                    {
+                                        caraccapacidade[0] = ' ';
+                                        caraccapacidade[1] = caracteres[0];
+                                        caraccapacidade[2] = caracteres[1];
+                                    }
+                                    else
+                                    {
+                                        if (caracteres.Length == 3)
+                                        {
+                                            caraccapacidade[0] = caracteres[0];
+                                            caraccapacidade[1] = caracteres[1];
+                                            caraccapacidade[2] = caracteres[2];
+                                        }
+                                    }
+                                }
+
+                                string cap = caraccapacidade[0].ToString() + caraccapacidade[1].ToString() + caraccapacidade[2].ToString();
+
+                                for (int i = 0; i < 3; i++)
+                                {
+                                    if (vetorcapacidade.Contains(caraccapacidade[i].ToString()))
+                                    {
+                                        encontrado = true;
+                                    }
+                                    else
+                                    {
+                                        encontrado = false;
+                                        break;
+                                    }
+                                }
+                                if (encontrado == true)
+                                {
+                                    return cap;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Só aceita dígitos numéricos válidos!");
+                                    retornar = PausaMensagem();
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Deve ter um valor de quantidade de passageiros, só aceita no máximo 3 dígitos!");
+                                retornar = PausaMensagem();
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine("Insira apenas números!");
+                            retornar = PausaMensagem();
+                        }
+                    } while (retornar == false);
+
+                    //Retorna nulo se o usuário quiser cancelar no meio do cadastro;
+                    return null;
+
+
+
+                #endregion
+
+
+                case "situacao":
+
+                    #region Situacao
+
+
+                    do
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Essa aeronave ficará inicialmente no sistema como:\n[A] - Ativa\n[I] - Inativa");
+                        Console.CursorVisible = false;
+                        ConsoleKeyInfo op = Console.ReadKey(true);
+
+                        //Verificar se tecla pressionada foi A ou I (independente do CAPSLOCK estar ativado!)
+                        if (op.Key == ConsoleKey.A)
+                        {
+                            Console.Clear();
+                            return "A";
+                        }
+                        else
+                        {
+                            if (op.Key == ConsoleKey.I)
+                            {
+                                Console.Clear();
+                                return "I";
+                            }
+                            else
+                            {
+                                Console.WriteLine("Escolha uma opção válida!");
+                                retornar = PausaMensagem();
+                            }
+                        }
+                    } while (retornar == false);
+
+                    //Retorna nulo se o usuário quiser cancelar no meio do cadastro;
+                    return null;
+
+
+                #endregion
+
+                case "destino":
+
+                    #region Destino
+
+                    do
+                    {
+                        retornar = false;
+
+                        Console.Write("Informe o código IATA do aeroporto de destino: ");
+                        try
+                        {
+                            string iata = Console.ReadLine().ToUpper();
+
+                            if (listDestino.Contains(iata))
+                            {
+                                return iata;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Código não encontrado! Insira um código IATA válido!");
+                                retornar = PausaMensagem();
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine("Insira um código IATA válido!");
+                            retornar = PausaMensagem();
+                        }
+                    } while (retornar == false);
+
+                    //Retorna nulo se o usuário quiser cancelar no meio do cadastro;
+                    return null;
+
+                #endregion
+
+
+                case "aeronave":
+
+                    #region Aeronave
+                    encontrado = false;
+                    do
+                    {
+                        retornar = false;
+
+                        Console.Write("Informe o código Nacional de identificação da Aeronave: ");
+                        try
+                        {
+                            idaeronave = Console.ReadLine().ToUpper();
+
+                            foreach (var aeronave in listAeronaves)
+                            {
+                                if (aeronave.Inscricao == idaeronave)
+                                {
+                                    encontrado = true;
+                                    break;
+                                }
+                                else
+                                {
+                                    encontrado = false;
+                                }
+                            }
+
+                            if (encontrado == true)
+                            {
+                                return idaeronave;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Código não encontrado! Insira um código IATA válido!");
+                                retornar = PausaMensagem();
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine("Insira um código IATA válido!");
+                            retornar = PausaMensagem();
+                        }
+                    } while (retornar == false);
+
+                    //Retorna nulo se o usuário quiser cancelar no meio do cadastro;
+                    return null;
+
+
+                #endregion
+
+
+                case "valorpassagem":
+
+                    #region ValorPassagem
+
+                    do
+                    {
+                        try
+                        {
+                            Console.WriteLine("insira o valor da passagem: ");
+                            float valor = float.Parse(Console.ReadLine());
+                            if (valor > 0 && valor < 10000)
+                            {
+                                return valor.ToString("N2");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Não é possível vender passagens desse valor");
+                                retornar = PausaMensagem();
+                            }
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Escolha uma opção válida!");
+                            retornar = PausaMensagem();
+                        }
+                    } while (retornar == false);
+
+                    return null;
+
+                #endregion
+
+                case "cpflogin":
+
+                    #region CpflLogin
+
+                    do
+                    {
+                        retornar = false;
+
+                        Console.Write("Informe o CPF para prosseguir: ");
+                        try
+                        {
+                            string cpf = Console.ReadLine();
+
+                            //Retira o passageiro escolhido da lista de passageiros:
+                            Passageiro p = null;
+                            encontrado = false;
+                            foreach (var passageiro in listPassageiro)
+                            {
+                                if (passageiro.Cpf == cpf)
+                                {
+                                    p = passageiro;
+                                    encontrado = true;
+                                    break;
+                                }
+                                else
+                                {
+                                    encontrado = false;
+                                }
+                            }
+                            if (encontrado == true)
+                            {
+                                //Verifica se é maior de idade:
+                                if (DateTime.Compare(p.DataNascimento, System.DateTime.Now.AddYears(-18)) <= 0)
+                                {
+                                    encontrado = false;
+                                    //Procura na lista de restritos:
+                                    foreach (var restrito in listRestritos)
+                                    {
+                                        if (p.Cpf == restrito)
+                                        {
+                                            encontrado = true;
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            encontrado = false;
+                                        }
+                                    }
+                                    //Se não estiver na lista de restritos, retorna o cpf.
+                                    if (encontrado == false)
+                                    {
+                                        return cpf;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Impossível prosseguir! Esse Passageiro se encontra restrito!");
+                                        retornar = PausaMensagem();
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Impossível prosseguir! Esse Passageiro é menor de idade!");
+                                    retornar = PausaMensagem();
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("CPF não encontrado! Insira um CPF válido!");
+                                retornar = PausaMensagem();
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine("Insira um CPF válido!");
+                            retornar = PausaMensagem();
+                        }
+                    } while (retornar == false);
+
+                    //Retorna nulo se o usuário quiser cancelar no meio do cadastro;
+                    return null;
+
+
+
+                #endregion
+
+
+                case "cpfexiste":
+
+                    #region CpfExiste
+
+                    do
+                    {
+                        retornar = false;
+
+                        Console.Write("Informe o CPF para prosseguir: ");
+                        try
+                        {
+                            string cpf = Console.ReadLine();
+
+                            //Consulta o cpf do passageiro escolhido da lista de passageiros:
+                            encontrado = false;
+                            foreach (var passageiro in listPassageiro)
+                            {
+                                if (passageiro.Cpf == cpf)
+                                {
+                                    encontrado = true;
+                                    break;
+                                }
+                                else
+                                {
+                                    encontrado = false;
+                                }
+                            }
+                            if (encontrado == true)
+                            {
+                                return cpf;
+                            }
+                            else
+                            {
+                                Console.WriteLine("CPF não encontrado! Insira um CPF válido!");
+                                retornar = PausaMensagem();
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine("CPF Inválido!");
+                            retornar = PausaMensagem();
+                        }
+                    } while (retornar == false);
+
+                    //Retorna nulo se o usuário quiser cancelar no meio do cadastro;
+                    return null;
+
+                #endregion
+
+
+                case "idvoo":
+
+                    #region IDVoo
+
+                    do
+                    {
+                        retornar = false;
+
+                        Console.Write("Informe o ID do Voo para prosseguir: ");
+                        try
+                        {
+                            string idvoo = Console.ReadLine();
+
+                            //Consulta o id do voo escolhido da lista de voos:
+                            encontrado = false;
+                            foreach (var voo in listVoo)
+                            {
+                                if (voo.IDVoo == idvoo)
+                                {
+                                    encontrado = true;
+                                    break;
+                                }
+                                else
+                                {
+                                    encontrado = false;
+                                }
+                            }
+
+                            if (encontrado == true)
+                            {
+                                return idvoo;
+                            }
+                            else
+                            {
+                                Console.WriteLine("ID do Voo não encontrado! Insira um código válido!");
+                                retornar = PausaMensagem();
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine("ID do Voo inválido!");
+                            retornar = PausaMensagem();
+                        }
+                    } while (retornar == false);
+
+                    //Retorna nulo se o usuário quiser cancelar no meio do cadastro;
+                    return null;
+
+
+                #endregion
+
+
+                default:
+                    return "Parâmetro informado para o método ValidarEntrada está incorreto";
+                    Pausa();
 
             }
         }
@@ -1532,6 +2002,7 @@ namespace POnTheFly
                     case 3:
 
                         // Chamar a tela de entrada para as vendas
+                        TelaVendas();
 
                         break;
 
@@ -1587,19 +2058,25 @@ namespace POnTheFly
             } while (opc != 0);
         }
 
-        static void TelaLoginPassageiro() // OK ~ Falta Acertar o uso das funções e liberar as partes comentadas * 
+        static void TelaLoginPassageiro() // OK
         {
+            string cpf;
             Passageiro passageiroAtivo;
             Console.Clear();
-            Console.WriteLine("\nInforme o 'CPF' para Entrar:\n");
-         //     passageiroAtivo = ValidarEntrada("cpfexiste");
-         //    if (passageiroAtivo == null)
-          //   {
-           //   Pausa();
-           //  TelaInicialPassageiros();
-           //   }
-
-            //  TelaOpcoesPassageiro(passageiroAtivo); // encontrou um 'CPF' valido e existente nos cadastros, então manda para a tela de opções.
+           
+            cpf = ValidarEntrada("cpfexiste");
+            if (cpf== null)
+            {
+                TelaInicialPassageiros();
+            }
+            foreach (Passageiro passageiro in listPassageiro)
+            {
+                if (passageiro.Cpf == cpf)
+                {
+                    passageiroAtivo = passageiro;
+                    TelaOpcoesPassageiro(passageiroAtivo);
+                }
+            }
         }
 
         static void TelaOpcoesPassageiro(Passageiro passageiroAtivo) // OK ~ Falta Acertar o uso das funções e liberar as partes comentadas * 
@@ -1611,7 +2088,6 @@ namespace POnTheFly
                 Console.WriteLine("\nOPÇÕES PARA O PASSAGEIRO: " /* + passageiroAtivo.Nome*/);
                 Console.WriteLine("\nEscolha a Opção Desejada:\n");
                 Console.WriteLine(" 1 - Editar Cadastro\n");
-                Console.WriteLine(" 2 - Comprar Passagem\n");
                 Console.WriteLine("\n 0 - SAIR\n");
                 opc = int.Parse(ValidarEntrada("menu"));
                 Console.Clear();
@@ -1632,46 +2108,17 @@ namespace POnTheFly
 
                     case 2:
 
-                        // bool restrito = false;
-                        //   bool maiorDe18 = false;
-                        //string cpf = passageiroAtivo.Cpf;
-                        // DateTime nascimento = passageiroAtivo.DataNascimento;
-
-                        // maiorDe18 = VerificarMaiorDe18(nascimento);
-                        // if (maiorDe18 == false)
-                        // {
-                        //      Console.Clear();
-                        //      Console.WriteLine("\nImpossível acessar Area de Vendas com Passageiro menor de 18 anos!");
-                        //      Pausa();
-                        //      TelaOpcoesPassageiro(passageiroAtivo);
-                        // }
-                        // 
-                        // restrito = VerificarCpfRestrito("cpf");
-                        // if (restrito == false)
-                        // {
-                        //      Console.Clear();
-                        //      Console.WriteLine("\nAcesso à area de Vendas está 'RESTRITA' para esse 'CPF'!");
-                        //      Pausa();
-                        //      TelaOpcoesPassageiro(passageiroAtivo);
-                        // }
-
-                        // if (restrito == true && maiorDe18 == true)
-                        //{
-                        //      TelaInicialVendas();
-                        //}
-
+                        string cpfLogin = ValidarEntrada("cpflogin");
+                        if (cpfLogin == null) TelaOpcoesPassageiro(passageiroAtivo);
+                        else if (cpfLogin == passageiroAtivo.Cpf)
+                       {
+                            TelaVendas(passageiroAtivo);
+                        }
                         break;
                 }
 
             } while (true);
-            // case 2:
-            //
-            // validar se o Passageiro com esse CPF é maior de 18 anos
-            //
-            // validar se o CPF está na lista de bloqueados
-            //
-            // se as duas condições acima forem verdadeiras (é maior de 18 e não está na lista de bloqueados)
-            // segue para as vendas ||| se uma das duas não for verdadeira retornara para tela anterior depois de uma mensagem com o motivo.
+         
         }
 
         static void TelaCadastrarPassageiro() // OK ! Só dar um 'CTRL+K+U' em tudo pra tirar os comentarios 
@@ -1699,7 +2146,7 @@ namespace POnTheFly
                 Console.WriteLine("\nPassageiro Cadastrado com Sucesso!");
                 Passageiro passageiro = new Passageiro(cpf, nome, DateConverter(dataNascimento), sexo, System.DateTime.Now, System.DateTime.Now, 'A');
                 listPassageiro.Add(passageiro);
-                GravarPassageiro(listPassageiro);
+                GravarPassageiro();
                 Pausa();
                 TelaInicialPassageiros();
 
@@ -2079,7 +2526,7 @@ namespace POnTheFly
         #endregion  //Incompleto
 
         #region TelasVenda
-        static void TelaVendas(Passageiro passageiroAtivo,string IDPassagem, Voo vooatual, int quantPassagem) //VER OS PARAMETROS
+        static void TelaVendas(Passageiro passageiroAtivo, string IDPassagem, Voo vooatual, int quantPassagem) //VER OS PARAMETROS
         {
             quantPassagem = 0;
             int opc;
@@ -2088,8 +2535,7 @@ namespace POnTheFly
             Console.WriteLine("2 - Ver Passagens Vendidas\n");
             Console.WriteLine("3 - Ver Passagens Reservadas\n");
             Console.WriteLine("\n0 -  SAIR\n");
-            Console.WriteLine("\nOpção: ");
-            opc = int.Parse(Console.ReadLine());
+            opc = int.Parse(ValidarEntrada("menu"));
             switch (opc)
             {
                 case 0:
@@ -2100,21 +2546,21 @@ namespace POnTheFly
                     TelaVoosDisponiveis();
                     break;
                 case 2:
-                    TelaPassagensVendidas();
+                    TelaHistoricoPassagem();
                     break;
                 case 3:
-                    TelaPassagensReservadas();
+                    TelaPassagensReservadas(idVoo);
                     break;
             }
         }
-        static void TelaVoosDisponiveis() // VER OS PARAMETROS
+        static void TelaVoosDisponiveis()
         {
             int opc;
             foreach (var Voo in listVoo)
             {
                 if (Voo.Situacao == 'A')
                 {
-                    Console.WriteLine("\nIDVoo: " + Voo.IDVoo + "\nDestino: " + Voo.Destino + "\nData do Voo: " + Voo.DataVoo);
+                    Console.WriteLine("IDVoo: " + Voo.IDVoo + "Destino: " + Voo.Destino + "Data do Voo: " + Voo.DataVoo);
                 }
             }
             Console.WriteLine("\n----------------------------------------------------------------------------------------------");
@@ -2124,25 +2570,26 @@ namespace POnTheFly
             switch (opc)
             {
                 case 0:
-                    //TelaVendas(passageiroAtivo, IDPassagem, vooatual, quantPassagem);
+                    TelaVendas();
                     break;
                 case 1:
                     Console.Clear();
                     string idvoo = ValidarEntrada("idvoo");
                     if (idvoo == null) TelaVoosDisponiveis();
-                  //  TelaDescricaoVoo(idvoo);
+                    TelaDescricaoVoo(idvoo,passageiro);
                     break;
             }
-        } // VER OS PARAMETROS
-        static void TelaDescricaoVoo(string idvoo)
+        }
+        static void TelaDescricaoVoo(string idvoo,Passageiro passageiro)
         {
-            Voo vooatual = null;
+            int quantPassagem = 0;
+            int opc;
+            Voo vooatual=null;
             foreach (var voo in listVoo)
             {
                 if (voo.IDVoo == idvoo)
                 {
                     vooatual = voo;
-                
                     break;
                 }
                 else
@@ -2151,91 +2598,124 @@ namespace POnTheFly
                 }
             }
             Console.WriteLine(vooatual.ToString());
-        }
-        static void TelaPassagensVendidas()
-        {
-
-        }
-        static void TelaPassagensReservadas( )
-        {
-            int opc;//mostro a lista de passagens reservadas
-            foreach (var PassagemVoo in listPassagem)
+            Console.WriteLine("\n----------------------------------------------------------------------------------------------");
+            Console.WriteLine("1 - Comprar: ");
+            Console.WriteLine("2 - Reservar: ");
+            Console.WriteLine("0 - Voltar: ");
+            opc = int.Parse(ValidarEntrada("menu"));
+            switch (opc)
             {
-                if (PassagemVoo.Situacao == 'R')
-                {
-                  //  Console.WriteLine("\nID Passagem: " + PassagemVoo.IDPassagem + "\nID Voo: " + vooatual.IDVoo + "\nValor: " + PassagemVoo.Valor+"\nData da Venda: "+PassagemVoo.DataUltimaOperacao);
-                }
+                case 0:
+                    TelaVoosDisponiveis();
+                    break;
+                case 1:
+                    int cont = 0;
+                    bool retornar = false;
+                    do
+                    {
+                        Console.WriteLine("Digite a quantidade de passagens: ");
+                        quantPassagem = int.Parse(ValidarEntrada("menu"));
+                        if (quantPassagem > 0 && quantPassagem <= 4)
+                        {
+                            foreach (var passagem in listPassagem)
+                            {
+                                if (passagem.IDVoo == idvoo && passagem.Situacao == 'L')
+                                {
+                                    cont++;
+                                }
+                            }
+                            if (cont >= quantPassagem)
+                            {
+                                cont = 0;
+                                PassagemVoo p = null;
+                                foreach (var passagem in listPassagem)
+                                {
+                                    if (passagem.IDVoo == idvoo && passagem.Situacao == 'L')
+                                    {
+                                        p = passagem;
+                                        passagem.Situacao = 'P';
+                                        GravarPassagem();
+                                        cont++;
+                                    }
+                                    if (cont == quantPassagem)
+                                    {
+                                        retornar = true;
+                                        Venda venda = new Venda(GeradorId("idvenda"),System.DateTime.Now,passageiro.Cpf,(p.Valor*quantPassagem));
+
+                                        listVenda.Add(venda);
+                                        GravarVenda();
+                                        ItemVenda item = new ItemVenda(GeradorId("iditemvenda"),p.IDPassagem,p.Valor);
+                                        listItemVenda.Add(item);
+                                        GravarItemVenda();
+
+                                        Console.WriteLine("Compra realizada com sucesso!");
+                                        Pausa();
+                                        break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Não possui esta quantidade de passagens disponíveis: ");
+                                retornar = PausaMensagem();
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Só é possível comprar [4] passagens por venda");
+                            retornar = PausaMensagem();
+                        }
+                    } while (retornar == true);
+                    break;
+                case 2:
+                    TelaPassagensReservadas(idvoo);
+                    break;
+            }
+        }
+        static void TelaHistoricoVendas()
+        {
+            int opc;
+            foreach (var Venda in listVenda)
+            {
+                Console.WriteLine("ID Passagem: " + Passagem.IDPassagem + "ID Voo: " + Passagem.IDVoo + "Valor: " + Passagem.Valor + "Data da Venda: " + Passagem.DataOperacao);
             }
             Console.WriteLine("\n----------------------------------------------------------------------------------------------");
-            Console.WriteLine("\n1 - Escolher a Passagem Reservada Desejada: ");
+            Console.WriteLine("\n1 - Detalhes da Venda: ");
             Console.WriteLine("0 - Voltar");
             opc = int.Parse(ValidarEntrada("menu"));
             switch (opc)
             {
                 case 0:
-                   // TelaVendas(passageiroAtivo, IDPassagem, vooatual, quantPassagem);
+                    TelaVendas();
                     break;
                 case 1:
-                  /*  if (quantPassagem >= 0 && quantPassagem < 4)
-                    {
-                        Console.Clear();
-                        string idPassagem = ValidarEntrada("idpassagem");
-                        if (idPassagem == null) TelaPassagensReservadas(IDPassagem, vooatual, passageiroAtivo, quantPassagem);
-                       
-                        DescricaoReservada(IDPassagem, passageiroAtivo,quantPassagem, vooatual);
-                      
-                    }
-                    else
-                    {
-                        Console.WriteLine("Você atingiu o máximo de passagens por venda(4)");
-                        Pausa();
-                      //  TelaVendas(IDPassagem, vooatual, passageiroAtivo, quantPassagem);
-                    }
-                  */
+                    TelaDescricaoItemVenda(idpassagem);
                     break;
             }
-
         }
-        static void DescricaoReservada(string IDPassagem)
+        static void TelaDescricaoItemVenda(string idpassagem)
         {
-            PassagemVoo passagemAtual = null;
+            PassagemVoo passagematual = null;
             foreach (var passagem in listPassagem)
             {
-                if (passagem.IDPassagem == IDPassagem)
+                if (passagem.IDPassagem == idpassagem)
                 {
-                    passagemAtual = passagem;
+                    passagematual = passagem;
                     break;
                 }
                 else
                 {
-                    passagemAtual = null;
+                    passagematual = null;
                 }
             }
-            Console.WriteLine(passagemAtual.ToString());
-          //  PagarOuLivre();
+            Console.WriteLine(passagematual.ToString());
+            Pausa();
+            TelaVendas();
+            Console.ReadKey();
         }
-        static void PagarOuLivre()
+        static void TelaPassagensReservadas()
         {
-            int opc = 0;
-            Console.WriteLine("\n0 - Voltar");
-            Console.WriteLine("\n1- Efetuar pagamento passagem");
-            Console.WriteLine("\n2- Cancelar reserva passagem");
-            opc = int.Parse(ValidarEntrada("menu"));
-            switch (opc)
-            {
-                case 0:
-                   // TelaOpcoesPassageiro(passageiroAtivo);
-                    break;
-                case 1:
-                   // passagemAtual.Situacao = 'P';// se pagar a reserva, a passagem fica paga.
-                  //  quantPassagem += 1;
-                  //  passagemAtual.ToString();// histórico da passagem
-                  //  TelaVendas(IDPassagem,vooatual,passageiroAtivo,quantPassagem);
-                    break;
-                case 2:
-                  //  passagemAtual.Situacao = 'L';// se cancela a reserva, a passagem fica livre
-                    break;
-            }
+
         }
         #endregion
 
