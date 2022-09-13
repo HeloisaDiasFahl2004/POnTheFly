@@ -2835,7 +2835,7 @@ namespace POnTheFly
             {
                 if (Voo.Situacao == 'A')
                 {
-                    Console.WriteLine("IDVoo: " + Voo.IDVoo + "Destino: " + Voo.Destino + "Data do Voo: " + Voo.DataVoo.ToString("dd/MM/yyyy HH:mm"));
+                    Console.WriteLine("IDVoo: " + Voo.IDVoo + " Destino: " + Voo.Destino + " Data e Hora do Voo: " + Voo.DataVoo.ToString("dd/MM/yyyy HH:mm"));
                 }
             }
             Console.WriteLine("\n----------------------------------------------------------------------------------------------");
@@ -2929,6 +2929,7 @@ namespace POnTheFly
                                         Venda venda = new Venda(/*GeradorId("idvenda")*/"PA1234", System.DateTime.Now, passageiroAtivo.Cpf, (p.Valor * quantPassagem));
                                         listVenda.Add(venda);
                                         GravarVenda();
+                                        
                                         string idAeronave = null;
                                         foreach (var voo in listVoo)
                                         {
@@ -2949,6 +2950,7 @@ namespace POnTheFly
 
                                         Console.WriteLine("Compra realizada com sucesso!");
                                         Pausa();
+                                        TelaVendas(passageiroAtivo);
                                         break;
                                     }
                                 }
@@ -3000,20 +3002,13 @@ namespace POnTheFly
                                         listItemVenda.Add(item);
                                         GravarItemVenda();
                                         Console.WriteLine("Reserva realizada com sucesso!");
+                                        
                                         cont++;
                                     }
-                                    if (cont == quantPassagem)
-                                    {
-                                        retornar = true;
-                                        Venda venda = new Venda(/*GeradorId("idvenda")*/"1234", System.DateTime.Now, passageiroAtivo.Cpf, (p.Valor * quantPassagem));
-                                        listVenda.Add(venda);
-                                        GravarVenda();
-
-
-                                        Pausa();
-                                        break;
-                                    }
+                                    if (cont == quantPassagem) break;
                                 }
+                                Console.WriteLine("Reserva realizada com sucesso!");
+                                TelaVendas(passageiroAtivo);
                             }
                             else
                             {
@@ -3023,7 +3018,7 @@ namespace POnTheFly
                         }
                         else
                         {
-                            Console.WriteLine("Só é possível comprar [4] passagens por venda");
+                            Console.WriteLine("Só é possível reservar [4] passagens por venda");
                             retornar = PausaMensagem();
                         }
                     } while (retornar == true);

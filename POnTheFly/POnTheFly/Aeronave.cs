@@ -30,7 +30,7 @@ namespace Proj_POG_OnTheFly
         }
         public string ObterDados()
         {
-            return Inscricao + Capacidade + AssentosOcupados + UltimaVenda.ToString("ddMMyyyyHHmm") + DataCadastro.ToString("ddMMyyyyHHmm") + Situacao;
+            return Inscricao + Capacidade + string.Format("{0:000}", AssentosOcupados) + UltimaVenda.ToString("ddMMyyyyHHmm") + DataCadastro.ToString("ddMMyyyyHHmm") + Situacao;
         }
     }
 }
