@@ -30,7 +30,7 @@ namespace Proj_POG_OnTheFly
         }
         public string ObterDados()
         {
-            return Cnpj + RazaoSocial + DataAbertura + UltimoVoo.ToString("ddMMyyyyHHmm") + DataCadastro.ToString("ddMMyyyyHHmm") + Situacao;
+            return Cnpj + RazaoSocial + DataAbertura.ToString("ddMMyyyy") + UltimoVoo.ToString("ddMMyyyyHHmm") + DataCadastro.ToString("ddMMyyyyHHmm") + Situacao;
         }
 
     }

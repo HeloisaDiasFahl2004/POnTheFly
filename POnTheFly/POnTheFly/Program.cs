@@ -24,12 +24,7 @@ namespace POnTheFly
         static public DateTime DateConverter(string data)
         {
             char[] datasembarra = data.ToCharArray();
-            char[] datacombarra = new char[] { datasembarra[0], datasembarra[1], '/', datasembarra[2], datasembarra[3], '/', datasembarra[4], datasembarra[5], datasembarra[6], datasembarra[7] };
-            string datacombarras = null;
-            for (int i = 0; i < 10; i++)
-            {
-                datacombarras = datacombarras + datacombarra[i];
-            }
+            string datacombarras = (datasembarra[0].ToString() + datasembarra[1].ToString() + "/" + datasembarra[2].ToString() + datasembarra[3].ToString() + "/" + datasembarra[4].ToString() + datasembarra[5].ToString() + datasembarra[6].ToString() + datasembarra[7].ToString());
             return DateTime.Parse(datacombarras);
         }
         static public DateTime DateHourConverter(string datahora)
@@ -100,6 +95,7 @@ namespace POnTheFly
             {
                 gravCompAerea.WriteLine(companhiaaerea.ObterDados());
             }
+           gravCompAerea.Close();   
         }
         static void GravarAeronaves()
         {
@@ -108,6 +104,7 @@ namespace POnTheFly
             {
                 gravAeronaves.WriteLine(aeronaves.ObterDados());
             }
+            gravAeronaves.Close();
         }
         static void GravarVoo()
         {
@@ -116,6 +113,7 @@ namespace POnTheFly
             {
                 gravVoo.WriteLine(voo.ObterDados());
             }
+            gravVoo.Close();
         }
         static void GravarPassagem()
         {
@@ -124,6 +122,7 @@ namespace POnTheFly
             {
                 gravPassagem.WriteLine(passagem.ObterDados());
             }
+            gravPassagem.Close();
         }
         static void GravarVenda()
         {
@@ -132,6 +131,7 @@ namespace POnTheFly
             {
                 gravVenda.WriteLine(venda.ObterDados());
             }
+            gravVenda.Close();
         }
         static void GravarItemVenda()
         {
@@ -140,6 +140,7 @@ namespace POnTheFly
             {
                 gravItemVenda.WriteLine(itemvenda.ObterDados());
             }
+            gravItemVenda.Close();
         }
         static void GravarRestritos()
         {
@@ -148,6 +149,7 @@ namespace POnTheFly
             {
                 gravRestritos.WriteLine(restritos);
             }
+            gravRestritos.Close();
         }
         static void GravarBloqueados()
         {
@@ -156,6 +158,7 @@ namespace POnTheFly
             {
                 gravBloqueados.WriteLine(bloqueados);
             }
+            gravBloqueados.Close();
         }
 
         static void CarregarArquivos()
@@ -200,9 +203,15 @@ namespace POnTheFly
             //Passageiro
             try
             {
+               
                 linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\Passageiro.dat");
                 foreach (var linha in linhas)
                 {
+                    data = null;
+                    Situacao = ' ';
+                    Valor = 0;
+                    valor = null;
+
                     caracteres = linha.ToCharArray();
                     for (int i = 0; i <= 10; i++)
                     {
@@ -240,34 +249,38 @@ namespace POnTheFly
             //Companhia Aerea
             try
             {
+                
+             
                 linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\CompanhiaAerea.dat");
                 foreach (var linha in linhas)
                 {
+                    data = null;
+                    Situacao=' ';
                     caracteres = linha.ToCharArray();
                     for (int i = 0; i <= 13; i++)
                     {
                         Cnpj = Cnpj + caracteres[i].ToString();
                     }
-                    for (int i = 14; i <= 63; i++)
+                    for (int i = 14; i <= 64; i++)
                     {
                         RazaoSocial = RazaoSocial + caracteres[i].ToString();
                     }
-                    for (int i = 64; i <= 71; i++)
+                    for (int i = 65; i <= 72; i++)
                     {
                         data = data + caracteres[i].ToString();
                     }
                     DataAbertura = DateConverter(data);
-                    for (int i = 72; i <= 83; i++)
+                    for (int i = 73; i <= 84; i++)
                     {
                         data = data + caracteres[i].ToString();
                     }
                     UltimoVoo = DateHourConverter(data);
-                    for (int i = 84; i <= 95; i++)
+                    for (int i = 85; i <= 96; i++)
                     {
                         data = data + caracteres[i].ToString();
                     }
                     DataCadastro = DateHourConverter(data);
-                    Situacao = caracteres[96];
+                    Situacao = caracteres[97];
                     CompanhiaAerea CA = new CompanhiaAerea(Cnpj, RazaoSocial, DataAbertura, UltimoVoo, DataCadastro, Situacao);
                     listCompanhia.Add(CA);
                 }
@@ -278,10 +291,12 @@ namespace POnTheFly
             }
             //Aeronaves
             try
-            {
-                linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\Aeronave.dat");
+            { 
+                linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\Aeronaves.dat");
                 foreach (var linha in linhas)
                 {
+                    data = null;
+                    Situacao = ' ';
                     caracteres = linha.ToCharArray();
                     for (int i = 0; i <= 5; i++)
                     {
@@ -312,14 +327,18 @@ namespace POnTheFly
             }
             catch (Exception)
             {
-                Console.WriteLine("Mensagem de Erro:  Não foi possível carregar dados do arquivo Aeronave.dat ");
+                Console.WriteLine("Mensagem de Erro:  Não foi possível carregar dados do arquivo Aeronaves.dat ");
             }
             //Voo
             try
             {
+               
                 linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\Voo.dat");
                 foreach (var linha in linhas)
                 {
+                    data = null;
+                    Situacao = ' ';
+
                     caracteres = linha.ToCharArray();
                     for (int i = 0; i <= 4; i++)
                     {
@@ -355,9 +374,14 @@ namespace POnTheFly
             //PassagemVoo
             try
             {
+               
                 linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\PassagemVoo.dat");
                 foreach (var linha in linhas)
                 {
+                    data = null;
+                    Situacao = ' ';
+                    Valor = 0;
+                    valor = null;
                     caracteres = linha.ToCharArray();
                     for (int i = 0; i < 5; i++)
                     {
@@ -389,9 +413,14 @@ namespace POnTheFly
             //Venda
             try
             {
+                
                 linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\Venda.dat");
                 foreach (var linha in linhas)
                 {
+                    data = null;
+                    Situacao = ' ';
+                    Valor = 0;
+                    valor = null;
                     caracteres = linha.ToCharArray();
                     for (int i = 0; i < 4; i++)
                     {
@@ -422,9 +451,14 @@ namespace POnTheFly
             //ItemVenda
             try
             {
+             
                 linhas = System.IO.File.ReadAllLines(@"C:\DBOnTheFly\ItemVenda.dat");
                 foreach (var linha in linhas)
                 {
+                    data = null;
+                    Situacao = ' ';
+                    Valor = 0;
+                    valor = null;
                     caracteres = linha.ToCharArray();
                     for (int i = 0; i < 4; i++)
                     {
@@ -490,6 +524,17 @@ namespace POnTheFly
 
 
         #endregion GravarCarregar
+        static public List<string> GeradorIdPassagens(int capacidadeassentos)
+        {
+            Random random = new Random();
+            List<string> listaId = new List<string>();
+            for (int i = 0; i < capacidadeassentos; i++)
+            {
+                int id = random.Next(1000, 9999);
+                listaId.Add("PA" + id.ToString());
+            }
+            return listaId;
+        }
 
         #region Validacao
         static public string ValidarEntrada(string entrada)
@@ -899,7 +944,7 @@ namespace POnTheFly
                         encontrado = true;
                         retornar = false;
 
-                        Console.Write("Informe o Nome completo: ");
+                        Console.Write("Informe o Nome/Razão Social: ");
                         try
                         {
                             nome = Console.ReadLine();
@@ -1138,8 +1183,10 @@ namespace POnTheFly
                             {
                                 Console.Clear();
                                 Console.WriteLine("Insira a Data de abertura da Empresa:");
+
                                 Console.WriteLine(vetordata[0] + vetordata[1] + "/" + vetordata[2] + vetordata[3] + "/" + vetordata[4] + vetordata[5] + vetordata[6] + vetordata[7]);
                                 Console.CursorVisible = false;
+
                             }
 
                             //Verificar se digitou só nrs válidos
@@ -1235,7 +1282,7 @@ namespace POnTheFly
                             retornar = PausaMensagem();
                         }
                     } while (retornar == false);
-
+                    Console.Clear();
                     return null;
 
 
@@ -1402,7 +1449,7 @@ namespace POnTheFly
                         }
                     } while (retornar == false);
 
-
+                    Console.Clear();
                     return null;
 
                 #endregion
@@ -1418,7 +1465,7 @@ namespace POnTheFly
                     //A Agência Nacional de Aviação Civil(Anac) proíbe o registro de marcas de identificação em aeronaves iniciadas com a letra Q
                     //ou que tenham W como segunda letra.Os arranjos SOS, XXX, PAN, TTT, VFR, IFR, VMC e IMC não podem ser utilizados.
                     string[] idproibido = new string[] { "SOS", "XXX", "PAN", "TTT", "VFR", "IFR", "VMC", "IMC" };
-                    encontrado = true;
+                    encontrado = false;
                     string idaeronave;
 
                     do
@@ -1614,7 +1661,7 @@ namespace POnTheFly
                     do
                     {
                         Console.Clear();
-                        Console.WriteLine("Essa aeronave ficará inicialmente no sistema como:\n[A] - Ativa\n[I] - Inativa");
+                        Console.WriteLine("A situação ficará no sistema como:\n[A] - Ativa\n[I] - Inativa");
                         Console.CursorVisible = false;
                         ConsoleKeyInfo op = Console.ReadKey(true);
 
@@ -1692,12 +1739,15 @@ namespace POnTheFly
                         Console.Write("Informe o código Nacional de identificação da Aeronave: ");
                         try
                         {
+                            
                             idaeronave = Console.ReadLine().ToUpper();
-
+                           
+                         
                             foreach (var aeronave in listAeronaves)
                             {
                                 if (aeronave.Inscricao == idaeronave)
                                 {
+                                   
                                     encontrado = true;
                                     break;
                                 }
@@ -1711,7 +1761,7 @@ namespace POnTheFly
                             {
                                 return idaeronave;
                             }
-                            else
+                            else 
                             {
                                 Console.WriteLine("Código não encontrado! Insira um código IATA válido!");
                                 retornar = PausaMensagem();
@@ -1948,16 +1998,103 @@ namespace POnTheFly
 
 
                 #endregion
-
-
+                #region cnpjexiste
+                case "cnpjexiste": 
+                    do
+                    {
+                        retornar = false;
+                        Console.Write("Informe o CNPJ para prosseguir: ");
+                        try
+                        {
+                            string cnpj = Console.ReadLine();
+                            encontrado = false;
+                            foreach (var companhia in listCompanhia)
+                            {
+                                if (companhia.Cnpj == cnpj)
+                                {
+                                    encontrado = true;
+                                    break;
+                                }
+                                else
+                                {
+                                    encontrado = false;
+                                }
+                            }
+                            if (encontrado == true)
+                            {
+                                return cnpj;
+                            }
+                            else
+                            {
+                                Console.WriteLine("CNPJ não encontrado! Insira um CNPJ válido!");
+                                retornar = PausaMensagem();
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine("CPF Inválido!");
+                            retornar = PausaMensagem();
+                        }
+                    } while (retornar == false);
+                    //Retorna nulo se o usuário quiser cancelar no meio do cadastro;
+                    return null;
+                #endregion
                 default:
-                    return "Parâmetro informado para o método ValidarEntrada está incorreto";
-                    Pausa();
-
+                    return null;
             }
         }
         #endregion
-
+        static public string ValorConverter(float valor)
+        {
+            try
+            {
+                string[] valorpassagem = new string[] { "0", ".", "0", "0", "0", ",", "0", "0" };
+                string valorp = null;
+                string valorstring = valor.ToString("N2");
+                char[] vetorvalorstring = valorstring.ToCharArray();
+                if (valorstring.Length == 4)
+                {
+                    valorpassagem[4] = vetorvalorstring[0].ToString();
+                }
+                else
+                {
+                    if (valorstring.Length == 5)
+                    {
+                        valorpassagem[3] = vetorvalorstring[0].ToString();
+                        valorpassagem[4] = vetorvalorstring[1].ToString();
+                    }
+                    else
+                    {
+                        if (valorstring.Length == 6)
+                        {
+                            valorpassagem[2] = vetorvalorstring[0].ToString();
+                            valorpassagem[3] = vetorvalorstring[1].ToString();
+                            valorpassagem[4] = vetorvalorstring[2].ToString();
+                        }
+                        else
+                        {
+                            if (valorstring.Length == 8)
+                            {
+                                return valorstring;
+                            }
+                            else
+                            {
+                                return null;
+                            }
+                        }
+                    }
+                }
+                for (int i = 0; i < valorpassagem.Length; i++)
+                {
+                    valorp = valorp + valorpassagem[i];
+                }
+                return valorp;
+            }
+            catch
+            {
+                return null;
+            }
+        }
         #region TELAS Principais
         static void TelaInicial() // INCOMPLETO 
         {
@@ -1965,7 +2102,7 @@ namespace POnTheFly
             do
             {
                 Console.Clear();
-                Console.WriteLine("Bem vindo à POG On The Fly!");
+                Console.WriteLine("Bem vindo à On The Fly!");
                 Console.WriteLine("\nPor Favor, informe a Opção Desejada:\n");
                 Console.WriteLine(" 1 - Acesso aos Cadastros de Companhias Aéreas\n");
                 Console.WriteLine(" 2 - Acesso aos Cadastros de Passageiros\n");
@@ -1974,6 +2111,7 @@ namespace POnTheFly
                 Console.WriteLine(" 5 - Acesso a Lista de CNPJ Restritos");
                 Console.WriteLine("\n 0 - Encerrar Sessão\n");
                 opc = int.Parse(ValidarEntrada("menu"));
+                Console.Clear();
 
                 switch (opc)
                 {
@@ -2048,6 +2186,7 @@ namespace POnTheFly
                 Console.WriteLine(" 2 - Cadastrar um novo Passageiro\n");
                 Console.WriteLine("\n 0 - SAIR\n");
                 opc = int.Parse(ValidarEntrada("menu"));
+                Console.Clear();
 
                 switch (opc)
                 {
@@ -2440,6 +2579,7 @@ namespace POnTheFly
                 Console.WriteLine(" 2 - Cadastrar uma Nova Companhia Aérea\n");
                 Console.WriteLine("\n 0 - SAIR\n");
                 opc = int.Parse(ValidarEntrada("menu"));
+                Console.Clear();
 
                 switch (opc)
                 {
@@ -2470,7 +2610,7 @@ namespace POnTheFly
             CompanhiaAerea compAtivo;
             Console.Clear();
             Console.WriteLine("\nInforme o 'CNPJ' para Entrar:\n");
-            cnpj = ValidarEntrada("cnpjlogin");
+            cnpj = ValidarEntrada("cnpjexiste");
             if (cnpj == null) TelaInicialCompanhiasAereas();
 
             foreach (CompanhiaAerea companhia in listCompanhia)
@@ -2485,28 +2625,25 @@ namespace POnTheFly
         }
         static void TelaCadastrarCompanhiaAerea() // OK 
         {
-            do
-            {
-                string nomeComp;
-                string cnpj;
-                string dataAbertura;
+            string nomeComp;
+            string cnpj;
+            string dataAbertura;
 
-                nomeComp = ValidarEntrada("nome");
-                if (nomeComp == null) TelaInicialCompanhiasAereas();
+            nomeComp = ValidarEntrada("nome");
+            if (nomeComp == null) TelaInicialCompanhiasAereas();
 
-                cnpj = ValidarEntrada("cnpj");
-                if (cnpj == null) TelaInicialCompanhiasAereas();
+            cnpj = ValidarEntrada("cnpj");
+            if (cnpj == null) TelaInicialCompanhiasAereas();
 
-                dataAbertura = ValidarEntrada("dataabertura");
-                if (dataAbertura == null) TelaInicialCompanhiasAereas();
+            dataAbertura = ValidarEntrada("dataabertura");
+            if (dataAbertura == null) TelaInicialCompanhiasAereas();
 
-                CompanhiaAerea novaComp = new CompanhiaAerea(cnpj, nomeComp, DateConverter(dataAbertura), System.DateTime.Now, System.DateTime.Now, 'A');
-                listCompanhia.Add(novaComp);
-                GravarCompanhiaAerea();
-
+            CompanhiaAerea novaComp = new CompanhiaAerea(cnpj, nomeComp, DateConverter(dataAbertura), System.DateTime.Now, System.DateTime.Now, 'A');
+            listCompanhia.Add(novaComp);
+            GravarCompanhiaAerea();
+            TelaLoginCompanhiaAerea();
 
 
-            } while (true);
         }
         static void TelaOpcoesCompanhiaAerea(CompanhiaAerea compAtivo) // Ok
         {
@@ -2522,6 +2659,7 @@ namespace POnTheFly
                 Console.WriteLine(" 4 - Ver a Lista de Aeronaves Cadastradas\n");
                 Console.WriteLine("\n 0 - Encerrar Sessão\n");
                 opc = int.Parse(ValidarEntrada("menu"));
+                Console.Clear();
 
                 switch (opc)
                 {
@@ -2545,13 +2683,13 @@ namespace POnTheFly
 
                     case 3:
 
-                        TelaVerAeronavesCadastradas(/*compAtivo*/);
+                        TelaVerAeronavesCadastradas(compAtivo);
 
                         break;
 
                     case 4:
 
-                        TelaVerVoosCadastrados(/*compAtivo*/);
+                        //  TelaVerVoosCadastrados(compAtivo);
 
                         break;
                 }
@@ -2589,7 +2727,6 @@ namespace POnTheFly
             string idVoo;
             string destino;
             string idAeronave;
-            string idPassagem;
             string auxData;
             DateTime dataVoo;
             float valor;
@@ -2607,7 +2744,7 @@ namespace POnTheFly
 
             valor = float.Parse(ValidarEntrada("valorpassagem"));
             if (valor.Equals(null)) TelaOpcoesCompanhiaAerea(compAtivo);
-            idVoo = GeradorId("idvoo");
+            idVoo = /*GeradorId("idvoo")*/"12356";
             Voo novoVoo = new Voo(idVoo, destino, idAeronave, dataVoo, System.DateTime.Now, 'A');
             listVoo.Add(novoVoo);
             GravarVoo();
@@ -2626,29 +2763,29 @@ namespace POnTheFly
             {
                 PassagemVoo passagem = new PassagemVoo(idsPassagem[i], idVoo, System.DateTime.Now, valor, 'L');
                 listPassagem.Add(passagem);
-                GravarAeronaves();
+                GravarPassagem();
             }
             Console.WriteLine("\nCadastro Realizado com Sucesso!");
             Pausa();
             TelaOpcoesCompanhiaAerea(compAtivo);
         }
-        static void TelaVerAeronavesCadastradas(/*CompanhiaAerea compAtivo*/)
+        static void TelaVerAeronavesCadastradas(CompanhiaAerea compAtivo)
         {
-            //Console.Clear();
-            //foreach (Aeronave aeroNave in listAeronave)
-            //{
-            //    Console.WriteLine("ID: " + aeroNave.Inscricao + "Situação: " + aeroNave.Situacao);
-            //}
-            //Console.WriteLine("\n-----------------------------------------------------------------");
-            //Console.Write("\nInforme o ID da Aeronave que deseja ver os detalhes: ");
-            //string aeronave = ValidarEntrada("aeronave");
-            //if (aeronave == null) TelaOpcoesCompanhiaAerea(/*compAtivo*/);
+            /* Console.Clear();
+             foreach (Aeronave aeronave in listAeronaves)
+             {
+                 Console.WriteLine("id: " + aeronave.inscricao + "situação: " + aeronave.situacao);
+             }
+             console.writeline("\n-----------------------------------------------------------------");
+             console.write("\ninforme o id da aeronave que deseja ver os detalhes: ");
+             string aeronave = validarentrada("aeronave");
+             if (aeronave == null) telaopcoescompanhiaaerea(compativo);
 
-            //foreach (Aeronave aeroNave in listAeronave)
-            //{
-            //    if (aeroNave.Inscricao == aeronave)
-            //        TelaEditarAeronave(compAtivo, aeroNave);
-            //}
+             foreach (aeronave aeronave in listAeronaves)
+             {
+                 if (aeronave.inscricao == aeronave)
+                     TelaEditarAeronave(compativo, aeronave);
+             }*/
         }
         static void TelaEditarAeronave(/*CompanhiaAerea compAtivo, Aeronave aeroNave*/)
         {
@@ -2665,7 +2802,7 @@ namespace POnTheFly
         #region TelasVenda
         static void TelaVendas(Passageiro passageiroAtivo)
         {
-          
+
             int opc;
             Console.WriteLine("Informe a opção desejada: \n");
             Console.WriteLine("1 - Vender Passagem\n");
@@ -2673,6 +2810,8 @@ namespace POnTheFly
             Console.WriteLine("3 - Ver Passagens Reservadas\n");
             Console.WriteLine("\n0 -  SAIR\n");
             opc = int.Parse(ValidarEntrada("menu"));
+            Console.Clear();
+
             switch (opc)
             {
                 case 0:
@@ -2685,7 +2824,7 @@ namespace POnTheFly
                     TelaHistoricoVendas(passageiroAtivo);
                     break;
                 case 3:
-                   TelaHistoricoReservadas(passageiroAtivo);
+                    TelaHistoricoReservadas(passageiroAtivo);
                     break;
             }
         }
@@ -2703,6 +2842,8 @@ namespace POnTheFly
             Console.WriteLine("\n1 - Escolher o Voo Desejado: ");
             Console.WriteLine("0 - Voltar");
             opc = int.Parse(ValidarEntrada("menu"));
+            Console.Clear();
+
             switch (opc)
             {
                 case 0:
@@ -2718,7 +2859,7 @@ namespace POnTheFly
         }
         static void TelaDescricaoVoo(string idvoo, Passageiro passageiroAtivo)
         {
-           
+
             int opc;
             Voo vooatual = null;
             foreach (var voo in listVoo)
@@ -2739,6 +2880,8 @@ namespace POnTheFly
             Console.WriteLine("2 - Reservar: ");
             Console.WriteLine("0 - Voltar: ");
             opc = int.Parse(ValidarEntrada("menu"));
+            Console.Clear();
+
             switch (opc)
             {
                 case 0:
@@ -2774,7 +2917,7 @@ namespace POnTheFly
                                         passagem.Situacao = 'P';
                                         passagem.DataUltimaOperacao = System.DateTime.Now;
                                         GravarPassagem();
-                                        ItemVenda item = new ItemVenda(GeradorId("iditemvenda"), passagem.IDPassagem, passagem.Valor);
+                                        ItemVenda item = new ItemVenda(/*GeradorId("iditemvenda")*/"V3567", passagem.IDPassagem, passagem.Valor);
                                         listItemVenda.Add(item);
                                         GravarItemVenda();
                                         cont++;
@@ -2783,7 +2926,7 @@ namespace POnTheFly
                                     if (cont == quantPassagem)
                                     {
                                         retornar = true;
-                                        Venda venda = new Venda(GeradorId("idvenda"), System.DateTime.Now, passageiroAtivo.Cpf, (p.Valor * quantPassagem));
+                                        Venda venda = new Venda(/*GeradorId("idvenda")*/"PA1234", System.DateTime.Now, passageiroAtivo.Cpf, (p.Valor * quantPassagem));
                                         listVenda.Add(venda);
                                         GravarVenda();
                                         string idAeronave = null;
@@ -2802,7 +2945,7 @@ namespace POnTheFly
                                                 aeronave.AssentosOcupados = aeronave.AssentosOcupados + quantPassagem;
                                             }
                                         }
-                                       
+
 
                                         Console.WriteLine("Compra realizada com sucesso!");
                                         Pausa();
@@ -2853,7 +2996,7 @@ namespace POnTheFly
                                         passagem.Situacao = 'R';
                                         passagem.DataUltimaOperacao = System.DateTime.Now;
                                         GravarPassagem();
-                                        ItemVenda item = new ItemVenda(GeradorId("iditemvenda"), p.IDPassagem, p.Valor);
+                                        ItemVenda item = new ItemVenda(/*GeradorId("iditemvenda")*/"3654", p.IDPassagem, p.Valor);
                                         listItemVenda.Add(item);
                                         GravarItemVenda();
                                         Console.WriteLine("Reserva realizada com sucesso!");
@@ -2862,11 +3005,11 @@ namespace POnTheFly
                                     if (cont == quantPassagem)
                                     {
                                         retornar = true;
-                                        Venda venda = new Venda(GeradorId("idvenda"), System.DateTime.Now, passageiroAtivo.Cpf, (p.Valor * quantPassagem));
+                                        Venda venda = new Venda(/*GeradorId("idvenda")*/"1234", System.DateTime.Now, passageiroAtivo.Cpf, (p.Valor * quantPassagem));
                                         listVenda.Add(venda);
                                         GravarVenda();
-                                       
-                                       
+
+
                                         Pausa();
                                         break;
                                     }
@@ -2899,6 +3042,8 @@ namespace POnTheFly
             Console.WriteLine("\n1 - Detalhes da Venda: ");
             Console.WriteLine("0 - Voltar");
             opc = int.Parse(ValidarEntrada("menu"));
+            Console.Clear();
+
             switch (opc)
             {
                 case 0:
@@ -2911,7 +3056,7 @@ namespace POnTheFly
         }
         static void TelaDescricaoItemVenda(Passageiro passageiroAtivo)
         {
-           
+
             string idvenda = ValidarEntrada("idvenda");
             if (idvenda == null) TelaVendas(passageiroAtivo);
             foreach (var itemVenda in listItemVenda)
@@ -2924,7 +3069,7 @@ namespace POnTheFly
                     break;
                 }
             }
-           
+
         }
         static void TelaHistoricoReservadas(Passageiro passageiroAtivo)
         {
@@ -2933,9 +3078,9 @@ namespace POnTheFly
             {
                 if (passagem.Situacao == 'R')
                 {
-                    Console.WriteLine("ID Passagem: " + passagem.IDPassagem + "ID Voo: " + passagem.IDVoo + "Valor: " + passagem.Valor + "Data da Reserva: "+ passagem.DataUltimaOperacao);
+                    Console.WriteLine("ID Passagem: " + passagem.IDPassagem + "ID Voo: " + passagem.IDVoo + "Valor: " + passagem.Valor + "Data da Reserva: " + passagem.DataUltimaOperacao);
                 }
-               
+
             }
             Console.WriteLine("\n---------------------------------------------------------------------------------------------");
 
