@@ -1965,7 +1965,7 @@ namespace POnTheFly
             do
             {
                 Console.Clear();
-                Console.WriteLine("Bem vindo à On The Fly!");
+                Console.WriteLine("Bem vindo à POG On The Fly!");
                 Console.WriteLine("\nPor Favor, informe a Opção Desejada:\n");
                 Console.WriteLine(" 1 - Acesso aos Cadastros de Companhias Aéreas\n");
                 Console.WriteLine(" 2 - Acesso aos Cadastros de Passageiros\n");
@@ -1974,35 +1974,45 @@ namespace POnTheFly
                 Console.WriteLine(" 5 - Acesso a Lista de CNPJ Restritos");
                 Console.WriteLine("\n 0 - Encerrar Sessão\n");
                 opc = int.Parse(ValidarEntrada("menu"));
-                Console.Clear();
 
                 switch (opc)
                 {
                     case 0:
-
-                        // Lembrar de colocar uma chamada para todas funções de salvar antes.
                         Console.WriteLine("Encerrando...");
-                        Environment.Exit(0); //Fecha o programa 
+                        GravarPassageiro();
+                        GravarCompanhiaAerea();
+                        GravarAeronaves();
+                        GravarPassagem();
+                        GravarVenda();
+                        GravarVoo();
+                        GravarItemVenda();
+                        GravarBloqueados();
+                        GravarRestritos();
+                        Environment.Exit(0);
 
                         break;
 
                     case 1:
-
-                        // Chamar a tela de Companhias Aereas
                         TelaInicialCompanhiasAereas();
-
                         break;
 
                     case 2:
-
-                        // Chamar a tela de passageiros
                         TelaInicialPassageiros();
                         break;
 
                     case 3:
-
-                        // Chamar a tela de entrada para as vendas
-                        TelaVendas();
+                        string cpfLogin = ValidarEntrada("cpflogin");
+                        if (cpfLogin == null) TelaInicialPassageiros();
+                        Passageiro passageiroAtivo = null;
+                        foreach (var passageiro in listPassageiro)
+                        {
+                            if (passageiro.Cpf == cpfLogin)
+                            {
+                                passageiroAtivo = passageiro;
+                                break;
+                            }
+                        }
+                        TelaVendas(passageiroAtivo);
 
                         break;
 
@@ -2026,7 +2036,8 @@ namespace POnTheFly
         }
 
         #region TELAS_PASSAGEIROS
-        static void TelaInicialPassageiros() //OK ~ Falta Acertar o uso das funções *  
+        #region TELAS_PASSAGEIROS
+        static void TelaInicialPassageiros() //OK 
         {
             int opc = 0;
             do
@@ -2036,9 +2047,7 @@ namespace POnTheFly
                 Console.WriteLine(" 1 - Passageiro já cadastrado\n");
                 Console.WriteLine(" 2 - Cadastrar um novo Passageiro\n");
                 Console.WriteLine("\n 0 - SAIR\n");
-
                 opc = int.Parse(ValidarEntrada("menu"));
-                Console.Clear();
 
                 switch (opc)
                 {
@@ -2058,70 +2067,23 @@ namespace POnTheFly
             } while (opc != 0);
         }
 
-        static void TelaLoginPassageiro() // OK
+        static void TelaLoginPassageiro() // OK 
         {
             string cpf;
             Passageiro passageiroAtivo;
             Console.Clear();
-           
             cpf = ValidarEntrada("cpfexiste");
-            if (cpf== null)
-            {
-                TelaInicialPassageiros();
-            }
+            if (cpf == null) TelaInicialPassageiros();
             foreach (Passageiro passageiro in listPassageiro)
             {
                 if (passageiro.Cpf == cpf)
                 {
                     passageiroAtivo = passageiro;
-                    TelaOpcoesPassageiro(passageiroAtivo);
+                    TelaEditarPassageiro(passageiroAtivo);
                 }
             }
         }
-
-        static void TelaOpcoesPassageiro(Passageiro passageiroAtivo) // OK ~ Falta Acertar o uso das funções e liberar as partes comentadas * 
-        {
-            int opc;
-            do
-            {
-                Console.Clear();
-                Console.WriteLine("\nOPÇÕES PARA O PASSAGEIRO: " /* + passageiroAtivo.Nome*/);
-                Console.WriteLine("\nEscolha a Opção Desejada:\n");
-                Console.WriteLine(" 1 - Editar Cadastro\n");
-                Console.WriteLine("\n 0 - SAIR\n");
-                opc = int.Parse(ValidarEntrada("menu"));
-                Console.Clear();
-
-                switch (opc)
-                {
-                    case 0:
-
-                        TelaInicialPassageiros(); // escolheu sair, volta para a tela inicial de passageiros
-
-                        break;
-
-                    case 1:
-
-                        TelaEditarPassageiro(passageiroAtivo); // abre os dados do passageiro em questão para escolher quais quer editar
-
-                        break;
-
-                    case 2:
-
-                        string cpfLogin = ValidarEntrada("cpflogin");
-                        if (cpfLogin == null) TelaOpcoesPassageiro(passageiroAtivo);
-                        else if (cpfLogin == passageiroAtivo.Cpf)
-                       {
-                            TelaVendas(passageiroAtivo);
-                        }
-                        break;
-                }
-
-            } while (true);
-         
-        }
-
-        static void TelaCadastrarPassageiro() // OK ! Só dar um 'CTRL+K+U' em tudo pra tirar os comentarios 
+        static void TelaCadastrarPassageiro() // OK  
         {
             do
             {
@@ -2129,12 +2091,10 @@ namespace POnTheFly
                 string dataNascimento;
                 char sexo;
 
-                Passageiro novoPassageiro;
-
                 nome = ValidarEntrada("nome");
                 if (nome == null) TelaInicialPassageiros();
 
-                cpf = ValidarEntrada("cpf");   /// OBS: Precisa validar se o 'CPF' já existe na lista de cadastros!
+                cpf = ValidarEntrada("cpf");
                 if (cpf == null) TelaInicialPassageiros();
 
                 dataNascimento = ValidarEntrada("datanascimento");
@@ -2143,17 +2103,18 @@ namespace POnTheFly
                 sexo = char.Parse(ValidarEntrada("sexo"));
                 if (sexo.Equals(null)) TelaInicialPassageiros();
 
-                Console.WriteLine("\nPassageiro Cadastrado com Sucesso!");
+
                 Passageiro passageiro = new Passageiro(cpf, nome, DateConverter(dataNascimento), sexo, System.DateTime.Now, System.DateTime.Now, 'A');
                 listPassageiro.Add(passageiro);
                 GravarPassageiro();
+                Console.WriteLine("\nPassageiro Cadastrado com Sucesso!");
                 Pausa();
                 TelaInicialPassageiros();
 
             } while (true);
         }
 
-        static void TelaEditarPassageiro(Passageiro passageiroAtivo) // OK ~ Falta Acertar o uso das funções e liberar as partes comentadas * 
+        static void TelaEditarPassageiro(Passageiro passageiroAtivo) // OK
         {
             int opc;
             string novoNome;
@@ -2172,16 +2133,12 @@ namespace POnTheFly
                 Console.Write("\n 3 - Sexo");
                 Console.Write("\n 4 - Situação (Ativo / Inativo");
                 Console.Write("\n 0 - Voltar");
-
                 opc = int.Parse(ValidarEntrada("menu"));
-                Console.Clear();
 
                 switch (opc)
                 {
                     case 0:
-
-                        TelaOpcoesPassageiro(passageiroAtivo);
-
+                        TelaInicialPassageiros();
                         break;
 
                     case 1:
@@ -2194,6 +2151,7 @@ namespace POnTheFly
                         if (novoNome == null) TelaEditarPassageiro(passageiroAtivo);
 
                         passageiroAtivo.Nome = novoNome;
+                        GravarPassageiro();
                         Console.Clear();
                         Console.WriteLine("\nNome Alterado com Sucesso!");
                         Pausa();
@@ -2209,8 +2167,10 @@ namespace POnTheFly
                         Pausa();
                         novaDataNascimento = ValidarEntrada("datanascimento");
                         if (novaDataNascimento == null) TelaEditarPassageiro(passageiroAtivo);
+
                         data = DateConverter(novaDataNascimento);
                         passageiroAtivo.DataNascimento = data;
+                        GravarPassageiro();
                         Console.Clear();
                         Console.WriteLine("\nData de Nascimento Alterada com Sucesso!");
                         Pausa();
@@ -2219,36 +2179,39 @@ namespace POnTheFly
                         break;
 
                     case 3:
+                        Console.Clear();
+                        Console.WriteLine("\nSexo Atual: " + passageiroAtivo.Sexo);
+                        Console.Write("\n\nInforme o Novo Sexo");
+                        Pausa();
+                        novoSexo = char.Parse(ValidarEntrada("sexo"));
+                        if (novoSexo.Equals(null)) TelaInicialPassageiros();
 
-                        do
-                        {
-                            Console.Clear();
-                            Console.WriteLine("\nSexo Atual: " + passageiroAtivo.Sexo);
-                            Console.Write("\n\nInforme o Novo Sexo");
-                            Pausa();
-                            novoSexo = char.Parse(ValidarEntrada("sexo"));
-                            if (novoSexo.Equals(null)) TelaInicialPassageiros();
-                            passageiroAtivo.Sexo = novoSexo;
-                            Console.Clear();
-                            Console.WriteLine("\nSexo Alterado com Sucesso!");
-                            Pausa();
-                            TelaEditarPassageiro(passageiroAtivo);
-                        } while (true);
+                        passageiroAtivo.Sexo = novoSexo;
+                        GravarPassageiro();
+                        Console.Clear();
+                        Console.WriteLine("\nSexo Alterado com Sucesso!");
+                        Pausa();
+                        TelaEditarPassageiro(passageiroAtivo);
+                        break;
+
 
                     case 4:
 
                         Console.Clear();
-                        Console.WriteLine("\nPASSAGEIRO: " /*passageiroAtivo.Nome*/);
-                        //if (passageiroAtivo.Situacao == 'A')
+                        Console.WriteLine("\nPASSAGEIRO: " + passageiroAtivo.Situacao);
+                        if (passageiroAtivo.Situacao == 'A')
                         { Console.WriteLine("\nSituação Atual: ATIVO"); }
-                        //if (passageiroAtivo.Situacao == 'I')
+
+                        if (passageiroAtivo.Situacao == 'I')
                         { Console.WriteLine("\nSituação Atual: INATIVO"); }
+
                         Pausa();
 
-                        //novaSituacao = char.Parse(ValidarEntrada("situacao"));
-                        //if (novaSituacao.Equals(null)) TelaInicialPassageiros();
+                        novaSituacao = char.Parse(ValidarEntrada("situacao"));
+                        if (novaSituacao.Equals(null)) TelaInicialPassageiros();
 
-                        //passageiroAtivo.Situacao = novaSituacao;
+                        passageiroAtivo.Situacao = novaSituacao;
+                        GravarPassageiro();
                         Console.Clear();
                         Console.WriteLine("\nSituação de Cadastro Alterada com Sucesso!");
                         Pausa();
@@ -2258,6 +2221,8 @@ namespace POnTheFly
 
             } while (true);
         }
+
+        #endregion
 
         #endregion
 
@@ -2462,17 +2427,18 @@ namespace POnTheFly
         #endregion  //OK //OK
 
         #region TELAS_COMPANHIAS_AEREAS
-        static void TelaInicialCompanhiasAereas() // OK
+
+        // LEMBRAR DE VERIFICAR OS NOMES DAS LISTAS E FUNÇÕES 'GRAVAR' ***
+        static void TelaInicialCompanhiasAereas() // OK! Só tirar o comentario!
         {
             int opc = 0;
             do
             {
                 Console.Clear();
                 Console.WriteLine("\nInforme a Opção Desejada:\n");
-                Console.WriteLine(" 1 - Companhia Aéria já cadastrada\n");
+                Console.WriteLine(" 1 - Companhia Aérea já cadastrada\n");
                 Console.WriteLine(" 2 - Cadastrar uma Nova Companhia Aérea\n");
                 Console.WriteLine("\n 0 - SAIR\n");
-
                 opc = int.Parse(ValidarEntrada("menu"));
 
                 switch (opc)
@@ -2498,37 +2464,208 @@ namespace POnTheFly
 
             } while (opc != 0);
         }
-
-        static void TelaLoginCompanhiaAerea() // OK ~ Falta Acertar o uso das funções e liberar as partes comentadas *
+        static void TelaLoginCompanhiaAerea() // OK 
         {
+            string cnpj;
             CompanhiaAerea compAtivo;
             Console.Clear();
             Console.WriteLine("\nInforme o 'CNPJ' para Entrar:\n");
-            /*  compAtivo = ValidarLoginCompanhiaAerea();
-              if (compAtivo == null)
-               {
-                    Pausa();
-                   TelaInicialPassageiro();
-               }
+            cnpj = ValidarEntrada("cnpjlogin");
+            if (cnpj == null) TelaInicialCompanhiasAereas();
 
-              TelaOpcoesCompanhiaAerea(compAtivo); // encontrou um 'CNPJ' valido e existente nos cadastros, então manda para a tela de opções
-          */
+            foreach (CompanhiaAerea companhia in listCompanhia)
+            {
+                if (companhia.Cnpj == cnpj)
+                {
+                    compAtivo = companhia;
+                    TelaOpcoesCompanhiaAerea(compAtivo);
+                }
+            }
+
         }
-        static void TelaCadastrarCompanhiaAerea()
+        static void TelaCadastrarCompanhiaAerea() // OK 
+        {
+            do
+            {
+                string nomeComp;
+                string cnpj;
+                string dataAbertura;
+
+                nomeComp = ValidarEntrada("nome");
+                if (nomeComp == null) TelaInicialCompanhiasAereas();
+
+                cnpj = ValidarEntrada("cnpj");
+                if (cnpj == null) TelaInicialCompanhiasAereas();
+
+                dataAbertura = ValidarEntrada("dataabertura");
+                if (dataAbertura == null) TelaInicialCompanhiasAereas();
+
+                CompanhiaAerea novaComp = new CompanhiaAerea(cnpj, nomeComp, DateConverter(dataAbertura), System.DateTime.Now, System.DateTime.Now, 'A');
+                listCompanhia.Add(novaComp);
+                GravarCompanhiaAerea();
+
+
+
+            } while (true);
+        }
+        static void TelaOpcoesCompanhiaAerea(CompanhiaAerea compAtivo) // Ok
+        {
+            int opc = 0;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("\nCompanhia Aérea " + compAtivo.RazaoSocial);
+                Console.WriteLine("\nPor Favor, informe a Opção Desejada:\n");
+                Console.WriteLine(" 1 - Cadastrar uma nova Aeronave\n");
+                Console.WriteLine(" 2 - Programar um novo Voo\n");
+                Console.WriteLine(" 3 - Ver a Lista de Voos Cadastrados\n");
+                Console.WriteLine(" 4 - Ver a Lista de Aeronaves Cadastradas\n");
+                Console.WriteLine("\n 0 - Encerrar Sessão\n");
+                opc = int.Parse(ValidarEntrada("menu"));
+
+                switch (opc)
+                {
+                    case 0:
+
+                        TelaInicialCompanhiasAereas();
+
+                        break;
+
+                    case 1:
+
+                        TelaCadastrarAeronave(compAtivo);
+
+                        break;
+
+                    case 2:
+
+                        TelaCadastrarVoo(compAtivo);
+
+                        break;
+
+                    case 3:
+
+                        TelaVerAeronavesCadastradas(/*compAtivo*/);
+
+                        break;
+
+                    case 4:
+
+                        TelaVerVoosCadastrados(/*compAtivo*/);
+
+                        break;
+                }
+
+
+            } while (true);
+        }
+        static void TelaCadastrarAeronave(CompanhiaAerea compAtivo) // OK 
+        {
+            string idAeronave;
+            int capacidade;
+
+            char situacao;
+            Aeronave novaAeronave;
+
+            idAeronave = ValidarEntrada("idaeronave");
+            if (idAeronave == null) TelaOpcoesCompanhiaAerea(compAtivo);
+
+            capacidade = int.Parse(ValidarEntrada("capacidade"));
+            if (capacidade.Equals(null)) TelaOpcoesCompanhiaAerea(compAtivo);
+
+            situacao = char.Parse(ValidarEntrada("situacao"));
+            if (situacao.Equals(null)) TelaOpcoesCompanhiaAerea(compAtivo);
+
+            novaAeronave = new Aeronave(idAeronave, capacidade, 0, System.DateTime.Now, System.DateTime.Now, situacao);
+            listAeronaves.Add(novaAeronave);
+            GravarAeronaves();
+            Console.WriteLine("\nCadastro Realizado com Sucesso!");
+            Pausa();
+            TelaOpcoesCompanhiaAerea(compAtivo);
+        }
+        static void TelaCadastrarVoo(CompanhiaAerea compAtivo) // OK
+        {
+            Console.Clear();
+            string idVoo;
+            string destino;
+            string idAeronave;
+            string idPassagem;
+            string auxData;
+            DateTime dataVoo;
+            float valor;
+
+
+            destino = ValidarEntrada("destino");
+            if (destino == null) TelaOpcoesCompanhiaAerea(compAtivo);
+
+            idAeronave = ValidarEntrada("aeronave");
+            if (idAeronave == null) TelaOpcoesCompanhiaAerea(compAtivo);
+
+            auxData = ValidarEntrada("datavoo");
+            if (auxData == null) TelaOpcoesCompanhiaAerea(compAtivo);
+            dataVoo = DateHourConverter(auxData);
+
+            valor = float.Parse(ValidarEntrada("valorpassagem"));
+            if (valor.Equals(null)) TelaOpcoesCompanhiaAerea(compAtivo);
+            idVoo = GeradorId("idvoo");
+            Voo novoVoo = new Voo(idVoo, destino, idAeronave, dataVoo, System.DateTime.Now, 'A');
+            listVoo.Add(novoVoo);
+            GravarVoo();
+            Aeronave a = null;
+            foreach (var aeronave in listAeronaves)
+            {
+                if (aeronave.Inscricao == idAeronave)
+                {
+                    a = aeronave;
+                    break;
+                }
+            }
+            //Gerador de passagem
+            List<string> idsPassagem = GeradorIdPassagens(a.Capacidade);
+            for (int i = 0; i < a.Capacidade; i++)
+            {
+                PassagemVoo passagem = new PassagemVoo(idsPassagem[i], idVoo, System.DateTime.Now, valor, 'L');
+                listPassagem.Add(passagem);
+                GravarAeronaves();
+            }
+            Console.WriteLine("\nCadastro Realizado com Sucesso!");
+            Pausa();
+            TelaOpcoesCompanhiaAerea(compAtivo);
+        }
+        static void TelaVerAeronavesCadastradas(/*CompanhiaAerea compAtivo*/)
+        {
+            //Console.Clear();
+            //foreach (Aeronave aeroNave in listAeronave)
+            //{
+            //    Console.WriteLine("ID: " + aeroNave.Inscricao + "Situação: " + aeroNave.Situacao);
+            //}
+            //Console.WriteLine("\n-----------------------------------------------------------------");
+            //Console.Write("\nInforme o ID da Aeronave que deseja ver os detalhes: ");
+            //string aeronave = ValidarEntrada("aeronave");
+            //if (aeronave == null) TelaOpcoesCompanhiaAerea(/*compAtivo*/);
+
+            //foreach (Aeronave aeroNave in listAeronave)
+            //{
+            //    if (aeroNave.Inscricao == aeronave)
+            //        TelaEditarAeronave(compAtivo, aeroNave);
+            //}
+        }
+        static void TelaEditarAeronave(/*CompanhiaAerea compAtivo, Aeronave aeroNave*/)
         {
 
         }
-        static void TelaOpcoesCompanhiaAerea(/*CompanhiaAerea compAtivo*/)
+        static void TelaVerVoosCadastrados()
         {
+
 
         }
         #endregion
-        #endregion  //Incompleto
+        #endregion
 
         #region TelasVenda
-        static void TelaVendas(Passageiro passageiroAtivo, string IDPassagem, Voo vooatual, int quantPassagem) //VER OS PARAMETROS
+        static void TelaVendas(Passageiro passageiroAtivo)
         {
-            quantPassagem = 0;
+          
             int opc;
             Console.WriteLine("Informe a opção desejada: \n");
             Console.WriteLine("1 - Vender Passagem\n");
@@ -2539,28 +2676,27 @@ namespace POnTheFly
             switch (opc)
             {
                 case 0:
-                    //Retorna para tela:
-                    TelaOpcoesPassageiro(passageiroAtivo);
+                    TelaInicialPassageiros();
                     break;
                 case 1:
-                    TelaVoosDisponiveis();
+                    TelaVoosDisponiveis(passageiroAtivo);
                     break;
                 case 2:
-                    TelaHistoricoPassagem();
+                    TelaHistoricoVendas(passageiroAtivo);
                     break;
                 case 3:
-                    TelaPassagensReservadas(idVoo);
+                   TelaHistoricoReservadas(passageiroAtivo);
                     break;
             }
         }
-        static void TelaVoosDisponiveis()
+        static void TelaVoosDisponiveis(Passageiro passageiroAtivo)
         {
             int opc;
             foreach (var Voo in listVoo)
             {
                 if (Voo.Situacao == 'A')
                 {
-                    Console.WriteLine("IDVoo: " + Voo.IDVoo + "Destino: " + Voo.Destino + "Data do Voo: " + Voo.DataVoo);
+                    Console.WriteLine("IDVoo: " + Voo.IDVoo + "Destino: " + Voo.Destino + "Data do Voo: " + Voo.DataVoo.ToString("dd/MM/yyyy HH:mm"));
                 }
             }
             Console.WriteLine("\n----------------------------------------------------------------------------------------------");
@@ -2570,21 +2706,21 @@ namespace POnTheFly
             switch (opc)
             {
                 case 0:
-                    TelaVendas();
+                    TelaVendas(passageiroAtivo);
                     break;
                 case 1:
                     Console.Clear();
                     string idvoo = ValidarEntrada("idvoo");
-                    if (idvoo == null) TelaVoosDisponiveis();
-                    TelaDescricaoVoo(idvoo,passageiro);
+                    if (idvoo == null) TelaVoosDisponiveis(passageiroAtivo);
+                    TelaDescricaoVoo(idvoo, passageiroAtivo);
                     break;
             }
         }
-        static void TelaDescricaoVoo(string idvoo,Passageiro passageiro)
+        static void TelaDescricaoVoo(string idvoo, Passageiro passageiroAtivo)
         {
-            int quantPassagem = 0;
+           
             int opc;
-            Voo vooatual=null;
+            Voo vooatual = null;
             foreach (var voo in listVoo)
             {
                 if (voo.IDVoo == idvoo)
@@ -2606,14 +2742,16 @@ namespace POnTheFly
             switch (opc)
             {
                 case 0:
-                    TelaVoosDisponiveis();
+                    TelaVoosDisponiveis(passageiroAtivo);
                     break;
                 case 1:
                     int cont = 0;
                     bool retornar = false;
+                    int quantPassagem;
                     do
                     {
-                        Console.WriteLine("Digite a quantidade de passagens: ");
+                        Console.Clear();
+                        Console.WriteLine("\nInforme a quantidade de passagens (máximo 4): \n1  2  3  4");
                         quantPassagem = int.Parse(ValidarEntrada("menu"));
                         if (quantPassagem > 0 && quantPassagem <= 4)
                         {
@@ -2634,19 +2772,37 @@ namespace POnTheFly
                                     {
                                         p = passagem;
                                         passagem.Situacao = 'P';
+                                        passagem.DataUltimaOperacao = System.DateTime.Now;
                                         GravarPassagem();
+                                        ItemVenda item = new ItemVenda(GeradorId("iditemvenda"), passagem.IDPassagem, passagem.Valor);
+                                        listItemVenda.Add(item);
+                                        GravarItemVenda();
                                         cont++;
                                     }
+
                                     if (cont == quantPassagem)
                                     {
                                         retornar = true;
-                                        Venda venda = new Venda(GeradorId("idvenda"),System.DateTime.Now,passageiro.Cpf,(p.Valor*quantPassagem));
-
+                                        Venda venda = new Venda(GeradorId("idvenda"), System.DateTime.Now, passageiroAtivo.Cpf, (p.Valor * quantPassagem));
                                         listVenda.Add(venda);
                                         GravarVenda();
-                                        ItemVenda item = new ItemVenda(GeradorId("iditemvenda"),p.IDPassagem,p.Valor);
-                                        listItemVenda.Add(item);
-                                        GravarItemVenda();
+                                        string idAeronave = null;
+                                        foreach (var voo in listVoo)
+                                        {
+                                            if (idvoo == voo.IDVoo)
+                                            {
+                                                idAeronave = voo.IDVoo;
+                                                break;
+                                            }
+                                        }
+                                        foreach (var aeronave in listAeronaves)
+                                        {
+                                            if (aeronave.Inscricao == idAeronave)
+                                            {
+                                                aeronave.AssentosOcupados = aeronave.AssentosOcupados + quantPassagem;
+                                            }
+                                        }
+                                       
 
                                         Console.WriteLine("Compra realizada com sucesso!");
                                         Pausa();
@@ -2666,18 +2822,78 @@ namespace POnTheFly
                             retornar = PausaMensagem();
                         }
                     } while (retornar == true);
+                    TelaHistoricoVendas(passageiroAtivo);
                     break;
                 case 2:
-                    TelaPassagensReservadas(idvoo);
+
+                    cont = 0;
+                    retornar = false;
+                    do
+                    {
+                        Console.WriteLine("Digite a quantidade de passagens que deseja reservar: ");
+                        quantPassagem = int.Parse(ValidarEntrada("menu"));
+                        if (quantPassagem > 0 && quantPassagem <= 4)
+                        {
+                            foreach (var passagem in listPassagem)
+                            {
+                                if (passagem.IDVoo == idvoo && passagem.Situacao == 'L')
+                                {
+                                    cont++;
+                                }
+                            }
+                            if (cont >= quantPassagem)
+                            {
+                                cont = 0;
+                                PassagemVoo p = null;
+                                foreach (var passagem in listPassagem)
+                                {
+                                    if (passagem.IDVoo == idvoo && passagem.Situacao == 'L')
+                                    {
+                                        p = passagem;
+                                        passagem.Situacao = 'R';
+                                        passagem.DataUltimaOperacao = System.DateTime.Now;
+                                        GravarPassagem();
+                                        ItemVenda item = new ItemVenda(GeradorId("iditemvenda"), p.IDPassagem, p.Valor);
+                                        listItemVenda.Add(item);
+                                        GravarItemVenda();
+                                        Console.WriteLine("Reserva realizada com sucesso!");
+                                        cont++;
+                                    }
+                                    if (cont == quantPassagem)
+                                    {
+                                        retornar = true;
+                                        Venda venda = new Venda(GeradorId("idvenda"), System.DateTime.Now, passageiroAtivo.Cpf, (p.Valor * quantPassagem));
+                                        listVenda.Add(venda);
+                                        GravarVenda();
+                                       
+                                       
+                                        Pausa();
+                                        break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Não possui esta quantidade de passagens disponíveis: ");
+                                retornar = PausaMensagem();
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Só é possível comprar [4] passagens por venda");
+                            retornar = PausaMensagem();
+                        }
+                    } while (retornar == true);
+                    TelaHistoricoReservadas(passageiroAtivo);
                     break;
             }
         }
-        static void TelaHistoricoVendas()
+        static void TelaHistoricoVendas(Passageiro passageiroAtivo)
         {
             int opc;
-            foreach (var Venda in listVenda)
+            foreach (var venda in listVenda)
             {
-                Console.WriteLine("ID Passagem: " + Passagem.IDPassagem + "ID Voo: " + Passagem.IDVoo + "Valor: " + Passagem.Valor + "Data da Venda: " + Passagem.DataOperacao);
+                Console.WriteLine("ID Venda: " + venda.IDVenda + "Valor: " + venda.ValorTotal + "Data da Venda: " + venda.DataVenda);
             }
             Console.WriteLine("\n----------------------------------------------------------------------------------------------");
             Console.WriteLine("\n1 - Detalhes da Venda: ");
@@ -2686,37 +2902,50 @@ namespace POnTheFly
             switch (opc)
             {
                 case 0:
-                    TelaVendas();
+                    TelaVendas(passageiroAtivo);
                     break;
                 case 1:
-                    TelaDescricaoItemVenda(idpassagem);
+                    TelaDescricaoItemVenda(passageiroAtivo);
                     break;
             }
         }
-        static void TelaDescricaoItemVenda(string idpassagem)
+        static void TelaDescricaoItemVenda(Passageiro passageiroAtivo)
         {
-            PassagemVoo passagematual = null;
+           
+            string idvenda = ValidarEntrada("idvenda");
+            if (idvenda == null) TelaVendas(passageiroAtivo);
+            foreach (var itemVenda in listItemVenda)
+            {
+                if (itemVenda.IDItemVenda == idvenda)
+                {
+                    itemVenda.ToString();
+                    Pausa();
+                    TelaVendas(passageiroAtivo);
+                    break;
+                }
+            }
+           
+        }
+        static void TelaHistoricoReservadas(Passageiro passageiroAtivo)
+        {
+            int opc;
             foreach (var passagem in listPassagem)
             {
-                if (passagem.IDPassagem == idpassagem)
+                if (passagem.Situacao == 'R')
                 {
-                    passagematual = passagem;
-                    break;
+                    Console.WriteLine("ID Passagem: " + passagem.IDPassagem + "ID Voo: " + passagem.IDVoo + "Valor: " + passagem.Valor + "Data da Reserva: "+ passagem.DataUltimaOperacao);
                 }
-                else
-                {
-                    passagematual = null;
-                }
+               
             }
-            Console.WriteLine(passagematual.ToString());
-            Pausa();
-            TelaVendas();
-            Console.ReadKey();
-        }
-        static void TelaPassagensReservadas()
-        {
+            Console.WriteLine("\n---------------------------------------------------------------------------------------------");
 
+            Pausa();
+            TelaVendas(passageiroAtivo);
         }
+        static void TelaDescricaoReserva(Passageiro passageiroAtivo)
+        {
+        }
+
         #endregion
 
         static void Main(string[] args)
